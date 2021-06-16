@@ -2,4 +2,4 @@
 * text=auto
 
 # Ignore ASP.NET Language
-.aspx linguist-detectable = false
+.aspx linguist-detectable=false
