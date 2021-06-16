@@ -3,4 +3,4 @@
 
 # Ignore ASP.NET Language
 .aspx linguist-detectable=false
-# Applications/MonoBleedingEdge/etc/mono -linguist-detectable=false
+Applications/MonoBleedingEdge -linguist-detectable=false
