@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb9e73a9483c92f41b66457595365489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseTime: 15
+  baseTime: 10
   pc: {fileID: 500910828025492960}
   shrinkDelay: 0.4
 --- !u!114 &454786067193892742
@@ -181,5 +181,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pc: {fileID: 500910828025492960}
-  baseDamage: 15
+  baseDamage: 10
   maxAttackDelay: 0.7
+  minAttackDelay: 0.3

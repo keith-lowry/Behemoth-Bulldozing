@@ -17,6 +17,7 @@ public class Attacks : MonoBehaviour
     public PlayerController pc;
     public int baseDamage;
     public float maxAttackDelay; //largest possible delay between player's attacks
+    public float minAttackDelay; //smallest possible delay between player's attacks
     
     private float attackDelayModifier; //intervals of attack delay increase
     private float attackDelay; //scaled delay between attacks
@@ -28,7 +29,7 @@ public class Attacks : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         nextAttack = 0f;
-        attackDelayModifier = maxAttackDelay / (pc.maxScale - pc.minScale); //calculate "steps" btw max and min delay
+        attackDelayModifier = (maxAttackDelay - minAttackDelay) / (pc.maxScale - pc.minScale); //calculate "steps" btw max and min delay
         ScaleAttackDelay();
     }
 
@@ -70,7 +71,8 @@ public class Attacks : MonoBehaviour
     /// </summary>
     public void ScaleAttackDelay()
     {
-        attackDelay = attackDelayModifier * pc.GetScale();
+        float increase = (pc.GetScale() - pc.minScale) * attackDelayModifier;
+        attackDelay = minAttackDelay + + increase;
     }
 
     /// <summary>

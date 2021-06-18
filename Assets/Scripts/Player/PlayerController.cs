@@ -82,18 +82,20 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Grow the player.
+    /// Grow the player based on the scale
+    /// of the building destroyed.
     /// 
-    /// Called when the player destroys a building
-    /// and the player is not at max size.
+    /// Called when the player destroys a building.
     /// </summary>
-    /// <para>"level" level of the
-    /// building the player destroyed</para>
-    public void Grow(int level)
+    /// <para>
+    /// "scale" scale of the
+    /// building the player destroyed.
+    /// </para>
+    public void Grow(int buildingScale)
     {
         if (!AtMaximumScale()) // not already at max scale
         {
-            float increase = growthRate * level;
+            float increase = growthRate * buildingScale;
 
             if ((scale + increase) >= maxScale) //would reach max size
             {
@@ -124,7 +126,15 @@ public class PlayerController : MonoBehaviour
         {
             float decrease = growthRate;
 
-            scale -= decrease;
+            if ((scale - decrease) <= minScale) //would reach min size
+            {
+                scale = minScale;
+            }
+            else //would not reach min size
+            {
+                scale -= decrease;
+            }
+
             transform.localScale = new Vector3(scale, scale, transform.localScale.z); // shrink player
             timer.UpdateScaledTime(); //scale shrink timer
             ScaleMovementSpeed(); //scale movement speed
@@ -183,7 +193,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void ScaleMovementSpeed()
     {
-        float decrease = (scale - 1) * movementSpeedModifier;
+        float decrease = (scale - minScale) * movementSpeedModifier;
         movementSpeed = maxMovementSpeed - decrease;
     }
 }

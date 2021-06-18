@@ -6,7 +6,7 @@ using UnityEngine;
 public class BuildingBehavior : MonoBehaviour
 {
     public int health;
-    public int level;
+    public int scale;
 
     private SpriteRenderer sr;
 
@@ -18,7 +18,8 @@ public class BuildingBehavior : MonoBehaviour
 
     /// <summary>
     /// Makes the bulding take damage from
-    /// player.
+    /// player if the player's scale is greater
+    /// than or equal to that of the building.
     /// 
     /// Calls DestroyBuilding() if health 
     /// reaches zero.
@@ -32,8 +33,12 @@ public class BuildingBehavior : MonoBehaviour
     /// </param>
     public void TakeDamage(int damage, PlayerController mc)
     {
-        health -= damage;
         mc.timer.Reset(); //reset shrink timer
+
+        if (mc.GetScale() >= scale)
+        {
+            health -= damage;
+        }
 
         Debug.Log(health);
 
@@ -49,7 +54,7 @@ public class BuildingBehavior : MonoBehaviour
     /// </summary>
     private void DestroyBuilding(PlayerController mc)
     {
-        mc.Grow(level); //grow player
+        mc.Grow(scale); //grow player
         
         this.gameObject.SetActive(false);
     }
