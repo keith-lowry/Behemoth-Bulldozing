@@ -19,7 +19,8 @@ public class PlayerController : MonoBehaviour
 {
     public Attacks at;
     public ShrinkTimer timer;
-    public float maxScale; //maximum player size, minimum is assumed to be 1
+    public float maxScale; //maximum player size
+    public float minScale; //minimum player size
     public float growthRate; //base growth rate
     public float maxMovementSpeed; //fastest speed the player can move
     public float minMovementSpeed; //slowest speed the player can move
@@ -35,8 +36,11 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-        scale = gameObject.transform.localScale.x; // both scale components should be equal
-        movementSpeedModifier = (maxMovementSpeed - minMovementSpeed) / (maxScale - 1);
+        
+        scale = minScale;
+        transform.localScale = new Vector3(scale, scale, transform.localScale.z); //update player scale
+
+        movementSpeedModifier = (maxMovementSpeed - minMovementSpeed) / (maxScale - minScale); // calculate "steps" btw max and min movementspeed
         ScaleMovementSpeed();
     }
 
@@ -87,39 +91,73 @@ public class PlayerController : MonoBehaviour
     /// building the player destroyed</para>
     public void Grow(int level)
     {
-        float increase = growthRate * level;
-
-        if ((scale + increase) >= maxScale) //reach max size
+        if (!AtMaximumScale()) // not already at max scale
         {
-            scale = maxScale;
-        }
-        else //not at max size
-        {
-            scale += increase;
-        }
+            float increase = growthRate * level;
 
-        transform.localScale = new Vector3(scale, scale, transform.localScale.z); //scale up player
-        timer.UpdateScaledTime(); //scale shrink timer
-        ScaleMovementSpeed(); //scale movement speed
-        at.ScaleAttackDelay(); //scale attack delay
+            if ((scale + increase) >= maxScale) //would reach max size
+            {
+                scale = maxScale;
+            }
+            else //would not reach max size
+            {
+                scale += increase;
+            }
+
+            transform.localScale = new Vector3(scale, scale, transform.localScale.z); //scale up player
+            timer.UpdateScaledTime(); //scale shrink timer
+            ScaleMovementSpeed(); //scale movement speed
+            at.ScaleAttackDelay(); //scale attack delay
+        }
     }
 
     /// <summary>
-    /// Shrink the player.
+    /// Shrinks the player if it
+    /// is not at minimum scale
+    /// already.
     ///
     /// Called by the ShrinkTimer.
     /// </summary>
     public void Shrink()
     {
-        float decrease = growthRate;
+        if (!AtMinimumScale())
+        {
+            float decrease = growthRate;
 
-        scale -= decrease;
-        transform.localScale = new Vector3(scale, scale, transform.localScale.z); // shrink player
-        timer.UpdateScaledTime(); //scale shrink timer
-        ScaleMovementSpeed(); //scale movement speed
-        at.ScaleAttackDelay(); //scale attack delay
+            scale -= decrease;
+            transform.localScale = new Vector3(scale, scale, transform.localScale.z); // shrink player
+            timer.UpdateScaledTime(); //scale shrink timer
+            ScaleMovementSpeed(); //scale movement speed
+            at.ScaleAttackDelay(); //scale attack delay
+        }
+        
     }
 
+    /// <summary>
+    /// Checks if the player is at
+    /// the maximum scale.
+    /// </summary>
+    /// <returns>
+    /// True if the player is at maximum
+    /// scale, false otherwise.
+    /// </returns>
+    private bool AtMaximumScale()
+    {
+        return (scale == maxScale);
+    }
+
+    /// <summary>
+    /// Checks if the player is at
+    /// the minimum scale.
+    /// </summary>
+    /// <returns>
+    /// True if the player is at minimum
+    /// scale, false otherwise.
+    /// </returns>
+    private bool AtMinimumScale()
+    {
+        return (scale == minScale);
+    }
 
     /// <summary>
     /// Gets a normalized two dimensional

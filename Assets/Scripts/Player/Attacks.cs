@@ -28,7 +28,7 @@ public class Attacks : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         nextAttack = 0f;
-        attackDelayModifier = maxAttackDelay / pc.maxScale;
+        attackDelayModifier = maxAttackDelay / (pc.maxScale - pc.minScale); //calculate "steps" btw max and min delay
         ScaleAttackDelay();
     }
 

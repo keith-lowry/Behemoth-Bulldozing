@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1025400850593233821}
-  - component: {fileID: 6883307447134701831}
   m_Layer: 0
   m_Name: LevelTimer
   m_TagString: Untagged
@@ -36,16 +35,3 @@ RectTransform:
   m_AnchoredPosition: {x: 1.4178469, y: -0.08806826}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6883307447134701831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 865633741156141457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce2fc8c239b89a24b857a6514d303789, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeLeft: 60

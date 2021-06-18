@@ -28,7 +28,7 @@ public class ShrinkTimer : Timer
     {
         TikTok(); //decreases timeLeft
 
-        //shrinks player if time is 0 and player is not already at base scale
+        //shrinks player if time is 0 and delay between shrinks has elapsed
         if (CanShrink())
         {
             pc.Shrink();
@@ -56,19 +56,18 @@ public class ShrinkTimer : Timer
     }
 
     /// <summary>
-    /// Checks whether the player can be shrunk.
-    ///
-    /// Returns true when the time left on
-    /// the timer is 0, the player is not at
-    /// a scale of 1, and the delay between shrinks
-    /// has elapsed.
+    /// Checks whether the player can be shrunk
+    /// or not.
     /// </summary>
     /// <returns>
-    /// Can the player be shrunk?
+    /// True when the time left on
+    /// the timer is 0 and the delay
+    /// between shrinks
+    /// has elapsed, false otherwise.
     /// </returns>
     private bool CanShrink()
     {
-        return (timeLeft == 0 && transform.localScale != Vector3.one && Time.time >= nextShrink);
+        return (timeLeft == 0 && Time.time >= nextShrink);
     }
 
 }

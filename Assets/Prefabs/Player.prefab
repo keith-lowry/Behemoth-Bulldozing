@@ -149,6 +149,7 @@ MonoBehaviour:
   at: {fileID: 454786067193892742}
   timer: {fileID: 7349101263373956515}
   maxScale: 5
+  minScale: 1
   growthRate: 0.25
   maxMovementSpeed: 1
   minMovementSpeed: 0.5

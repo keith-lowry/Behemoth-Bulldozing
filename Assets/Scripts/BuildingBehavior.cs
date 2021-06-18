@@ -45,15 +45,11 @@ public class BuildingBehavior : MonoBehaviour
 
     /// <summary>
     /// Destroys this building and
-    /// grows the player if it
-    /// is not at max size.
+    /// grows the player.
     /// </summary>
     private void DestroyBuilding(PlayerController mc)
     {
-        if (mc.GetScale() < mc.maxScale) //not at max size
-        {
-            mc.Grow(level);
-        }
+        mc.Grow(level); //grow player
         
         this.gameObject.SetActive(false);
     }
