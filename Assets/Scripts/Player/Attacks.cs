@@ -34,6 +34,54 @@ public class Attacks : MonoBehaviour
     }
 
     /// <summary>
+    /// Player punches in the direction of the
+    /// cursor with their right hand.
+    /// </summary>
+    /// <param name="cursorDirection">
+    /// The direction of the cursor relative
+    /// to the player transform.
+    /// </param>
+    public void PunchRight(Vector2 cursorDirection)
+    {
+        //TODO: method body
+            //call Attack() method
+            //implement knockback
+            //implement movement
+    }
+
+    /// <summary>
+    /// Player punches in the direction of the
+    /// cursor with their left hand.
+    /// </summary>
+    /// <param name="cursorDirection">
+    /// The direction of the cursor relative
+    /// to the player transform.
+    /// </param>
+    public void PunchLeft(Vector2 cursorDirection)
+    {
+        //TODO: method body
+            //call Attack() method
+            //implement knockback
+            //implement movement
+    }
+
+    /// <summary>
+    /// Player kicks in the direction of the
+    /// cursor.
+    /// </summary>
+    /// <param name="cursorDirection">
+    /// The direction of the cursor relative
+    /// to the player transform.
+    /// </param>
+    public void Kick(Vector2 cursorDirection)
+    {
+        //TODO: method body
+            //call Attack() method
+            //implement knockback
+            //implement movement
+    }
+
+    /// <summary>
     /// Punch in direction of player's cursor with
     /// raycast.
     ///
@@ -45,6 +93,9 @@ public class Attacks : MonoBehaviour
     /// </para>
     public void Punch(Vector2 cursorDirection)
     {
+
+        //TODO: turn into Attack() method that returns a RaycastHit2D
+
         if (Time.time >= nextAttack)
         {
             nextAttack = Time.time + attackDelay;
