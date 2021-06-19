@@ -150,7 +150,7 @@ MonoBehaviour:
   timer: {fileID: 7349101263373956515}
   maxScale: 5
   minScale: 1
-  growthRate: 0.25
+  growthRate: 0.1
   maxMovementSpeed: 1
   minMovementSpeed: 0.5
 --- !u!114 &7349101263373956515
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseTime: 10
   pc: {fileID: 500910828025492960}
-  shrinkDelay: 0.4
+  shrinkDelay: 0.2
 --- !u!114 &454786067193892742
 MonoBehaviour:
   m_ObjectHideFlags: 0
