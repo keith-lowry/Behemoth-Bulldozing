@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 500910828025492960}
   - component: {fileID: 7349101263373956515}
   - component: {fileID: 454786067193892742}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pc: {fileID: 500910828025492960}
+  combos: {fileID: 0}
   baseDamage: 10
   maxAttackDelay: 0.7
   minAttackDelay: 0.3

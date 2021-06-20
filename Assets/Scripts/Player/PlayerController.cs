@@ -65,7 +65,17 @@ public class PlayerController : MonoBehaviour
         //attack control
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            at.Punch(GetCursorDirection());
+            at.PunchLeft(GetCursorDirection()); //left punch
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            at.PunchRight(GetCursorDirection()); //right punch
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            at.Kick(GetCursorDirection()); //kick
         }
     }
 
@@ -111,6 +121,17 @@ public class PlayerController : MonoBehaviour
             ScaleMovementSpeed(); //scale movement speed
             at.ScaleAttackDelay(); //scale attack delay
         }
+    }
+
+    /// <summary>
+    /// Moves the player sprite forward a bit
+    /// in the direction of the cursor.
+    /// </summary>
+    public void Dash()
+    {
+        //TODO: implement Dash
+
+        Debug.Log("Dash Activated");
     }
 
     /// <summary>

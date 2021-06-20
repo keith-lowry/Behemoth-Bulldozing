@@ -15,6 +15,7 @@ using Vector2 = UnityEngine.Vector2;
 public class Attacks : MonoBehaviour
 {
     public PlayerController pc;
+    public ComboList combos;
     public int baseDamage;
     public float maxAttackDelay; //largest possible delay between player's attacks
     public float minAttackDelay; //smallest possible delay between player's attacks
@@ -42,11 +43,21 @@ public class Attacks : MonoBehaviour
     /// to the player transform.
     /// </param>
     public void PunchRight(Vector2 cursorDirection)
-    {
-        //TODO: method body
-            //call Attack() method
-            //implement knockback
-            //implement movement
+    { 
+        //make attack if delay has elapsed or this is a unique attack
+        if (combos.Add(KeyCode.Mouse1) || Time.time >= nextAttack)
+        {
+            RaycastHit2D hit = Attack(cursorDirection);
+
+            if (hit)
+            {
+                BuildingBehavior bh = hit.transform.gameObject.GetComponent<BuildingBehavior>();
+                bh.TakeDamage(GetDamage(), pc); //make building take damage
+                
+
+                //TODO: implement player knockback
+            }
+        }
     }
 
     /// <summary>
@@ -59,10 +70,19 @@ public class Attacks : MonoBehaviour
     /// </param>
     public void PunchLeft(Vector2 cursorDirection)
     {
-        //TODO: method body
-            //call Attack() method
-            //implement knockback
-            //implement movement
+        //make attack if delay has elapsed or this is a unique attack
+        if (combos.Add(KeyCode.Mouse0) || Time.time >= nextAttack)
+        {
+            RaycastHit2D hit = Attack(cursorDirection);
+
+            if (hit)
+            {
+                BuildingBehavior bh = hit.transform.gameObject.GetComponent<BuildingBehavior>();
+                bh.TakeDamage(GetDamage(), pc); //make building take damage
+                
+                //TODO: implement player knockback
+            }
+        }
     }
 
     /// <summary>
@@ -75,45 +95,28 @@ public class Attacks : MonoBehaviour
     /// </param>
     public void Kick(Vector2 cursorDirection)
     {
-        //TODO: method body
-            //call Attack() method
-            //implement knockback
-            //implement movement
+        //make attack if delay has elapsed or this is a unique attack
+        if (combos.Add(KeyCode.F) || Time.time >= nextAttack)
+        {
+            RaycastHit2D hit = Attack(cursorDirection);
+
+            if (hit)
+            {
+                BuildingBehavior bh = hit.transform.gameObject.GetComponent<BuildingBehavior>();
+                bh.TakeDamage(GetDamage(), pc); //make building take damage
+
+                //TODO: implement player knockback
+            }
+        }
     }
 
     /// <summary>
-    /// Punch in direction of player's cursor with
-    /// raycast.
-    ///
-    /// If raycast hits a building, makes it take damage.
+    /// Calls PlayerController's Dash()
+    /// method.
     /// </summary>
-    /// <para name="cursorDirection">
-    /// Current direction of cursor with respect
-    /// to player.
-    /// </para>
-    public void Punch(Vector2 cursorDirection)
+    public void Dash()
     {
-
-        //TODO: turn into Attack() method that returns a RaycastHit2D
-
-        if (Time.time >= nextAttack)
-        {
-            nextAttack = Time.time + attackDelay;
-
-            Vector2 origin = new Vector2(transform.position.x, transform.position.y); //raycast origin
-            Vector2 direction = cursorDirection; //raycast direction
-
-            // TODO: tweak raycast size for different player scales?
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, sr.size.x * pc.GetScale(), LayerMask.GetMask("Buildings")); //make cast
-
-            if (hit) //hit building
-            {
-                BuildingBehavior bh = hit.transform.gameObject.GetComponent<BuildingBehavior>();
-
-                bh.TakeDamage(GetDamage(), pc); //make building take damage
-            }
-        }
-
+        pc.Dash();
     }
 
     /// <summary>
@@ -124,6 +127,25 @@ public class Attacks : MonoBehaviour
     {
         float increase = (pc.GetScale() - pc.minScale) * attackDelayModifier;
         attackDelay = minAttackDelay + + increase;
+    }
+
+    /// <summary>
+    /// Makes an attack in front of the player with
+    /// a raycast and returns the raycast hit.
+    /// </summary>
+    /// <param name="cursorDirection"></param>
+    /// <returns></returns>
+    private RaycastHit2D Attack(Vector2 cursorDirection)
+    {
+        nextAttack = Time.time + attackDelay;
+
+        Vector2 origin = new Vector2(transform.position.x, transform.position.y); //raycast origin
+        Vector2 direction = cursorDirection; //raycast direction
+
+        // TODO: tweak raycast size for different player scales?
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, sr.size.x * pc.GetScale(), LayerMask.GetMask("Buildings")); //make cast
+
+        return hit;
     }
 
     /// <summary>
