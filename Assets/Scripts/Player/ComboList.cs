@@ -16,52 +16,71 @@ public class ComboList : MonoBehaviour
     }
 
     /// <summary>
-    /// Adds the given KeyCode to the list.
+    /// Adds the given attack KeyCode to the list.
+    /// Clears the list if the given KeyCode fills
+    /// the list or is already in the list.
     /// 
-    /// Clears the list once it is filled or
-    /// if the key to add is not unique. A
-    /// not unique key will be added after the
-    /// list is cleared.
+    /// Returns true if the corresponding attack should receive no
+    /// attack delay, false if it should. Attacks that start a 
+    /// combo and attacks already in the list receive a delay.
     /// </summary>
     /// <param name="keyPressed">
-    /// They attack key pressed and to be added to the
+    /// The attack key pressed and to be added to the
     /// keys list.
     /// </param>
     /// <returns>
-    /// True if the key was unique, false otherwise.
+    /// True if the attack should receive no
+    /// attack delay, false otherwise.
     /// </returns>
     public bool Add(KeyCode keyPressed)
     {
-        if (keys.Contains(keyPressed))
+        if (keys.Contains(keyPressed)) //not a unique attack in combo
         {
-            //Debug.Log("RESET: ComboList already has that");
             keys.Clear(); //clear list, combo lost
-            keys.Add(keyPressed); //add anyways hehexD
             return false;
         }
-        else
+        else //unique attack in combo
         {
-            //Debug.Log("Key added");
+            if (IsEmpty()) //first attack in combo, has delay
+            {
+                keys.Add(keyPressed);
+                return false;
+            }
 
             keys.Add(keyPressed); //add key, combo continued
 
-            if (IsFull())
+            if (IsFull()) //completed combo
             {
-                //Debug.Log("Combo Completed"); //combo completed
                 keys.Clear(); //clear list
-                at.Dash(); //combo bonus movement
             }
 
             return true;
         }
     }
+
     /// <summary>
     /// Checks whether the list of
     /// KeyCodes is full.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>
+    /// True if the list is full,
+    /// false otherwise.
+    /// </returns>
     private bool IsFull()
     {
         return (keys.Capacity == keys.Count);
+    }
+
+    /// <summary>
+    /// Chcks whether the list of
+    /// KeyCodes is empty.
+    /// </summary>
+    /// <returns>
+    /// True if the list is empty,
+    /// false otherwise.
+    /// </returns>
+    private bool IsEmpty()
+    {
+        return (keys.Count == 0);
     }
 }

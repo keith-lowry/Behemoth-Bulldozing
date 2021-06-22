@@ -61,22 +61,6 @@ public class PlayerController : MonoBehaviour
         float inputY = Input.GetAxisRaw("Vertical");
         float inputX = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(inputX * movementSpeed, inputY * movementSpeed);
-
-        //attack control
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            at.PunchLeft(GetCursorDirection()); //left punch
-        }
-
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            at.PunchRight(GetCursorDirection()); //right punch
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            at.Kick(GetCursorDirection()); //kick
-        }
     }
 
     /// <summary>
@@ -124,17 +108,6 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Moves the player sprite forward a bit
-    /// in the direction of the cursor.
-    /// </summary>
-    public void Dash()
-    {
-        //TODO: implement Dash
-
-        Debug.Log("Dash Activated");
-    }
-
-    /// <summary>
     /// Shrinks the player if it
     /// is not at minimum scale
     /// already.
@@ -165,6 +138,33 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// Moves the player sprite forward a bit
+    /// in the direction of the cursor.
+    /// </summary>
+    public void Dash()
+    {
+        //TODO: implement Dash
+    }
+
+    /// <summary>
+    /// Gets a normalized two dimensional
+    /// vector representing the position
+    /// of the cursor relative to the player.
+    /// </summary>
+    /// <returns>
+    /// A normalized direction vector for the mouse cursor.
+    /// </returns>
+    public Vector2 GetCursorDirection()
+    {
+        Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 position = new Vector3(transform.position.x, transform.position.y, transform.position.y);
+        Vector2 direction = target - position;
+        direction.Normalize();
+
+        return direction;
+    }
+
+    /// <summary>
     /// Checks if the player is at
     /// the maximum scale.
     /// </summary>
@@ -188,24 +188,6 @@ public class PlayerController : MonoBehaviour
     private bool AtMinimumScale()
     {
         return (scale == minScale);
-    }
-
-    /// <summary>
-    /// Gets a normalized two dimensional
-    /// vector representing the position
-    /// of the cursor relative to the player.
-    /// </summary>
-    /// <returns>
-    /// A normalized direction vector for the mouse cursor.
-    /// </returns>
-    private Vector2 GetCursorDirection()
-    {
-        Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 position = new Vector3(transform.position.x, transform.position.y, transform.position.y);
-        Vector2 direction = target - position;
-        direction.Normalize();
-
-        return direction;
     }
 
     /// <summary>

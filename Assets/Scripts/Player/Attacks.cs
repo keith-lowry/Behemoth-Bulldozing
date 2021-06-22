@@ -34,29 +34,40 @@ public class Attacks : MonoBehaviour
         ScaleAttackDelay();
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        // attack control
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            PunchLeft(); //left punch
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            PunchRight(); //right punch
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Kick(); //kick
+        }
+    }
+
     /// <summary>
     /// Player punches in the direction of the
     /// cursor with their right hand.
     /// </summary>
-    /// <param name="cursorDirection">
-    /// The direction of the cursor relative
-    /// to the player transform.
-    /// </param>
-    public void PunchRight(Vector2 cursorDirection)
+    public void PunchRight()
     { 
-        //make attack if delay has elapsed or this is a unique attack
+        //make attack if it's part of a combo or delay has elapsed
         if (combos.Add(KeyCode.Mouse1) || Time.time >= nextAttack)
         {
-            RaycastHit2D hit = Attack(cursorDirection);
+            //animation control
 
-            if (hit)
-            {
-                BuildingBehavior bh = hit.transform.gameObject.GetComponent<BuildingBehavior>();
-                bh.TakeDamage(GetDamage(), pc); //make building take damage
-                
+            //TODO: call Dash()
 
-                //TODO: implement player knockback
-            }
+            Attack();
         }
     }
 
@@ -64,24 +75,16 @@ public class Attacks : MonoBehaviour
     /// Player punches in the direction of the
     /// cursor with their left hand.
     /// </summary>
-    /// <param name="cursorDirection">
-    /// The direction of the cursor relative
-    /// to the player transform.
-    /// </param>
-    public void PunchLeft(Vector2 cursorDirection)
+    public void PunchLeft()
     {
-        //make attack if delay has elapsed or this is a unique attack
+        //make attack if it's part of a combo or delay has elapsed
         if (combos.Add(KeyCode.Mouse0) || Time.time >= nextAttack)
         {
-            RaycastHit2D hit = Attack(cursorDirection);
+            //animation control
 
-            if (hit)
-            {
-                BuildingBehavior bh = hit.transform.gameObject.GetComponent<BuildingBehavior>();
-                bh.TakeDamage(GetDamage(), pc); //make building take damage
-                
-                //TODO: implement player knockback
-            }
+            //TODO: call Dash()
+
+            Attack();
         }
     }
 
@@ -89,34 +92,17 @@ public class Attacks : MonoBehaviour
     /// Player kicks in the direction of the
     /// cursor.
     /// </summary>
-    /// <param name="cursorDirection">
-    /// The direction of the cursor relative
-    /// to the player transform.
-    /// </param>
-    public void Kick(Vector2 cursorDirection)
+    public void Kick()
     {
-        //make attack if delay has elapsed or this is a unique attack
+        //make attack if it's part of a combo or delay has elapsed
         if (combos.Add(KeyCode.F) || Time.time >= nextAttack)
         {
-            RaycastHit2D hit = Attack(cursorDirection);
+            //animation control
 
-            if (hit)
-            {
-                BuildingBehavior bh = hit.transform.gameObject.GetComponent<BuildingBehavior>();
-                bh.TakeDamage(GetDamage(), pc); //make building take damage
+            //TODO: call Dash()
 
-                //TODO: implement player knockback
-            }
+            Attack();
         }
-    }
-
-    /// <summary>
-    /// Calls PlayerController's Dash()
-    /// method.
-    /// </summary>
-    public void Dash()
-    {
-        pc.Dash();
     }
 
     /// <summary>
@@ -126,26 +112,32 @@ public class Attacks : MonoBehaviour
     public void ScaleAttackDelay()
     {
         float increase = (pc.GetScale() - pc.minScale) * attackDelayModifier;
-        attackDelay = minAttackDelay + + increase;
+        attackDelay = minAttackDelay + increase;
     }
 
     /// <summary>
     /// Makes an attack in front of the player with
-    /// a raycast and returns the raycast hit.
+    /// a raycast. If cast hits a building, makes
+    /// it take damage.
     /// </summary>
-    /// <param name="cursorDirection"></param>
-    /// <returns></returns>
-    private RaycastHit2D Attack(Vector2 cursorDirection)
+    private void Attack()
     {
         nextAttack = Time.time + attackDelay;
 
         Vector2 origin = new Vector2(transform.position.x, transform.position.y); //raycast origin
-        Vector2 direction = cursorDirection; //raycast direction
+        Vector2 direction = pc.GetCursorDirection(); //raycast direction
 
         // TODO: tweak raycast size for different player scales?
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, sr.size.x * pc.GetScale(), LayerMask.GetMask("Buildings")); //make cast
 
-        return hit;
+        if (hit)
+        {
+            BuildingBehavior bh = hit.transform.gameObject.GetComponent<BuildingBehavior>();
+            bh.TakeDamage(GetDamage(), pc); //make building take damage
+
+
+            //TODO: implement player knockback
+        }
     }
 
     /// <summary>
