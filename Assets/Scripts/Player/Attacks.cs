@@ -38,17 +38,17 @@ public class Attacks : MonoBehaviour
     void Update()
     {
         // attack control
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKey(KeyCode.Mouse0))
         {
             PunchLeft(); //left punch
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKey(KeyCode.Mouse1))
         {
             PunchRight(); //right punch
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKey(KeyCode.F))
         {
             Kick(); //kick
         }
