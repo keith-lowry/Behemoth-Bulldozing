@@ -184,8 +184,8 @@ MonoBehaviour:
   pc: {fileID: 500910828025492960}
   combos: {fileID: 400634965481325180}
   baseDamage: 10
-  maxAttackDelay: 0.7
-  minAttackDelay: 0.3
+  maxAttackRate: 3
+  minAttackRate: 1
 --- !u!114 &400634965481325180
 MonoBehaviour:
   m_ObjectHideFlags: 0

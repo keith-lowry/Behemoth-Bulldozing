@@ -17,11 +17,11 @@ public class Attacks : MonoBehaviour
     public PlayerController pc;
     public ComboList combos;
     public int baseDamage;
-    public float maxAttackDelay; //largest possible delay between player's attacks
-    public float minAttackDelay; //smallest possible delay between player's attacks
+    public float maxAttackRate; //most number of times player can attack in a second
+    public float minAttackRate; //least number of times player can attack in a second
     
-    private float attackDelayModifier; //intervals of attack delay increase
-    private float attackDelay; //scaled delay between attacks
+    private float attackRateModifier; //intervals of attack rate decrease
+    private float attackRate; //scaled number of times player can attack in a second
     private SpriteRenderer sr;
     private float nextAttack; //time of next attack
 
@@ -30,8 +30,8 @@ public class Attacks : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         nextAttack = 0f;
-        attackDelayModifier = (maxAttackDelay - minAttackDelay) / (pc.maxScale - pc.minScale); //calculate "steps" btw max and min delay
-        ScaleAttackDelay();
+        attackRateModifier = (maxAttackRate - minAttackRate) / (pc.maxScale - pc.minScale); //calculate "steps" btw max and min delay
+        ScaleAttackRate();
     }
 
     // Update is called once per frame
@@ -109,20 +109,20 @@ public class Attacks : MonoBehaviour
     /// Scales the player's attack delay to their
     /// scale.
     /// </summary>
-    public void ScaleAttackDelay()
+    public void ScaleAttackRate()
     {
-        float increase = (pc.GetScale() - pc.minScale) * attackDelayModifier;
-        attackDelay = minAttackDelay + increase;
+        float decrease = (pc.GetScale() - pc.minScale) * attackRateModifier;
+        attackRate = maxAttackRate - decrease;
     }
 
     /// <summary>
     /// Makes an attack in front of the player with
-    /// a raycast. If cast hits a building, makes
+    /// a raycast. If cast hits a building, it makes
     /// it take damage.
     /// </summary>
     private void Attack()
     {
-        nextAttack = Time.time + attackDelay;
+        nextAttack = Time.time +  (1f / attackRate); //calculate time of next attack
 
         Vector2 origin = new Vector2(transform.position.x, transform.position.y); //raycast origin
         Vector2 direction = pc.GetCursorDirection(); //raycast direction

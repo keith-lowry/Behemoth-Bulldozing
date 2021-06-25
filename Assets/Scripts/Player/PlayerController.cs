@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(scale, scale, transform.localScale.z); //scale up player
             timer.UpdateScaledTime(); //scale shrink timer
             ScaleMovementSpeed(); //scale movement speed
-            at.ScaleAttackDelay(); //scale attack delay
+            at.ScaleAttackRate(); //scale attack delay
         }
     }
 
@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(scale, scale, transform.localScale.z); // shrink player
             timer.UpdateScaledTime(); //scale shrink timer
             ScaleMovementSpeed(); //scale movement speed
-            at.ScaleAttackDelay(); //scale attack delay
+            at.ScaleAttackRate(); //scale attack delay
         }
         
     }
