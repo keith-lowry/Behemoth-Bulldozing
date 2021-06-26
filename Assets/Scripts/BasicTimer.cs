@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Simple timer.
 /// </summary>
-public class Timer : MonoBehaviour
+public class BasicTimer : MonoBehaviour
 {
     public float baseTime;
 
@@ -24,28 +24,32 @@ public class Timer : MonoBehaviour
     }
 
     /// <summary>
-    /// Decreases timeLeft.
+    /// Resets the timer.
     /// </summary>
-    public void TikTok()
+    public void Reset()
+    {
+        timeLeft = baseTime;
+    }
+
+    /// <summary>
+    /// Decreases the time left in
+    /// the timer.
+    ///
+    /// Sets time left to 0 when time
+    /// has run out.
+    /// </summary>
+    protected void TikTok()
     {
         if (timeLeft > 0)
         {
-            timeLeft -= Time.deltaTime;;
+            timeLeft -= Time.deltaTime;
 
             if (timeLeft <= 0)
             {
                 timeLeft = 0;
             }
         }
-        
-    }
 
-    /// <summary>
-    /// Resets the timer.
-    /// </summary>
-    public void Reset()
-    {
-        timeLeft = baseTime;
     }
 
 }

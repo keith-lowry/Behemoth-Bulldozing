@@ -6,7 +6,7 @@ using UnityEngine;
 /// Simple timer that keeps track of when a
 /// player should begin to shrink.
 /// </summary>
-public class ShrinkTimer : Timer
+public class ShrinkTimer : BasicTimer
 {
     public PlayerController pc;
     public float shrinkDelay; //delay between shrinks

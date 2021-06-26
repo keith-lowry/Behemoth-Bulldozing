@@ -7,7 +7,7 @@ using UnityEngine;
 /// Simple timer that ends the level once it reaches
 /// zero and loads the given scene.
 /// </summary>
-public class LevelTimer : Timer
+public class LevelTimer : BasicTimer
 {
     public LevelLoader.SceneEnum nextScene;
 
