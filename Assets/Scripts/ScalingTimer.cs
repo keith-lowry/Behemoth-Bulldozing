@@ -25,7 +25,7 @@ public class ScalingTimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        TikTok();
     }
 
     /// <summary>
