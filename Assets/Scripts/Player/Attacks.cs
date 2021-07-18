@@ -8,14 +8,15 @@ using Vector2 = UnityEngine.Vector2;
 // ReSharper disable All
 
 /// <summary>
-/// Class that handles animations and
-/// mechanics associated with player
-/// attacks.
+/// Class that handles the player's
+/// attacks, including animations and
+/// making attacks against buildings
+/// and other players.
 /// </summary>
 public class Attacks : MonoBehaviour
 {
     public PlayerController pc;
-    public ComboList combos;
+    public ComboList combos; //
     public int baseDamage;
     public float maxAttackRate; //most number of times player can attack in a second
     public float minAttackRate; //least number of times player can attack in a second
