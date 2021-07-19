@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Script with list of KeyCodes under
+/// the hood to handle Combos behavior.
+///
+/// Allows three attacks to be made in quick
+/// succession as long as they are unique.
+/// </summary>
 public class ComboList : MonoBehaviour
 {
     public Attacks at;

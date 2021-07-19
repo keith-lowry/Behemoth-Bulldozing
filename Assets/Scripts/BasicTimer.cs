@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Simple timer.
+/// Simple functioning timer that
+/// counts down to 0 and can be reset.
 /// </summary>
 public class BasicTimer : MonoBehaviour
 {

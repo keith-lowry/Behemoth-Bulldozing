@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// Class for behavior of scene transition
-/// buttons.
+/// UI buttons.
 /// </summary>
 public class UITransitionButton : MonoBehaviour, UIButtonBehavior
 {

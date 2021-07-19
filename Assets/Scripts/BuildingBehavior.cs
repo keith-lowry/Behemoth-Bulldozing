@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 // ReSharper disable All
 
+/// <summary>
+/// Behavior script for Building objects. Buildings
+/// can take damage from players and be destroyed.
+/// </summary>
 public class BuildingBehavior : MonoBehaviour
 {
     public int health;
@@ -27,15 +31,15 @@ public class BuildingBehavior : MonoBehaviour
     /// <param name="damage">
     /// Damage to be taken by the building.
     /// </param>
-    /// <param name="mc">
+    /// <param name="pc">
     /// PlayerController of the player inflicting
     /// damage.
     /// </param>
-    public void TakeDamage(int damage, PlayerController mc)
+    public void TakeDamage(int damage, PlayerController pc)
     {
-        mc.timer.Reset(); //reset shrink timer
+        pc.shrinkTimer.Reset(); //reset shrink timer
 
-        if (mc.GetScale() >= scale)
+        if (pc.GetScale() >= scale)
         {
             health -= damage;
         }
@@ -44,7 +48,7 @@ public class BuildingBehavior : MonoBehaviour
 
         if (health <= 0)
         {
-            DestroyBuilding(mc);
+            DestroyBuilding(pc);
         }
     }
 
@@ -52,10 +56,13 @@ public class BuildingBehavior : MonoBehaviour
     /// Destroys this building and
     /// grows the player.
     /// </summary>
-    private void DestroyBuilding(PlayerController mc)
+    private void DestroyBuilding(PlayerController pc)
     {
-        mc.Grow(scale); //grow player
-        
+        if (!pc.AtMaximumScale()) 
+        {
+            pc.Grow(scale); //grow player
+        }
+
         this.gameObject.SetActive(false);
     }
 }

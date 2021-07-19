@@ -3,10 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Script that makes camera move horizontally
+/// at a constant speed after a given delay.
+/// </summary>
 public class ScrollingCamera : MonoBehaviour
 {
-    public float speed; // horizontal speed of the camera
-    public float delay;
+    public float speed = 2f; // horizontal speed of the camera
+    public float delay = 3f;
 
     private Rigidbody2D rb;
 

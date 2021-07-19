@@ -7,7 +7,7 @@ using Vector3 = UnityEngine.Vector3;
 
 /// <summary>
 /// Interface for handling main behavior for
-/// UIButtons when clicked.
+/// UI buttons when clicked.
 /// </summary>
 public interface UIButtonBehavior
 {

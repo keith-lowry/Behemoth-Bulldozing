@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Class for loading scenes.
+/// Static class for loading
+/// different scenes.
 /// </summary>
 public static class LevelLoader
 {

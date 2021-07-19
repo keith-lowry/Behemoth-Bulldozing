@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Script for making main Camera
-/// follow player.
+/// Script that makes the main Camera
+/// follow the player.
 /// </summary>
 public class CameraController : MonoBehaviour
 {

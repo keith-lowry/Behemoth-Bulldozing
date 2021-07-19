@@ -11,19 +11,19 @@ using Vector3 = UnityEngine.Vector3;
 // ReSharper disable All
 
 /// <summary>
-/// Main class that controls player
-/// movement and communicates with
+/// Player controller script that handles
+/// player movement and communicates with
 /// other player classes.
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
     public Attacks at;
-    public ShrinkTimer timer;
-    public float maxScale; //maximum player size
-    public float minScale; //minimum player size
-    public float growthRate; //base growth rate
-    public float maxMovementSpeed; //fastest speed the player can move
-    public float minMovementSpeed; //slowest speed the player can move
+    public ShrinkTimer shrinkTimer;
+    public float maxScale = 5f; //maximum player size
+    public float minScale = 1f; //minimum player size
+    public float growthRate = 0.1f; //base growth rate
+    public float maxMovementSpeed = 0.9f; //fastest speed the player can move
+    public float minMovementSpeed = 0.3f; //slowest speed the player can move
 
     private float movementSpeedModifier; //intervals of movement speed decrease
     private float movementSpeed;
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         
         scale = minScale;
-        transform.localScale = new Vector3(scale, scale, transform.localScale.z); //update player scale
+        transform.localScale = new Vector3(scale, scale, transform.localScale.z); //Player is initialized to minScale by default
 
         movementSpeedModifier = (maxMovementSpeed - minMovementSpeed) / (maxScale - minScale); // calculate "steps" btw max and min movementspeed
         ScaleMovementSpeed();
@@ -87,24 +87,22 @@ public class PlayerController : MonoBehaviour
     /// </para>
     public void Grow(int buildingScale)
     {
-        if (!AtMaximumScale()) // not already at max scale
+
+        float increase = growthRate * buildingScale;
+
+        if ((scale + increase) >= maxScale) //would reach max size
         {
-            float increase = growthRate * buildingScale;
-
-            if ((scale + increase) >= maxScale) //would reach max size
-            {
-                scale = maxScale;
-            }
-            else //would not reach max size
-            {
-                scale += increase;
-            }
-
-            transform.localScale = new Vector3(scale, scale, transform.localScale.z); //scale up player
-            timer.UpdateScaledTime(); //scale shrink timer
-            ScaleMovementSpeed(); //scale movement speed
-            at.ScaleAttackRate(); //scale attack delay
+            scale = maxScale;
         }
+        else //would not reach max size
+        {
+            scale += increase;
+        }
+
+        transform.localScale = new Vector3(scale, scale, transform.localScale.z); //scale up player
+        shrinkTimer.ScaleTimer(); //scale shrink timer
+        ScaleMovementSpeed(); //scale movement speed
+        at.ScaleAttackRate(); //scale attack delay
     }
 
     /// <summary>
@@ -116,25 +114,22 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Shrink()
     {
-        if (!AtMinimumScale())
+        float decrease = growthRate;
+
+        if ((scale - decrease) <= minScale) //would reach min size
         {
-            float decrease = growthRate;
-
-            if ((scale - decrease) <= minScale) //would reach min size
-            {
-                scale = minScale;
-            }
-            else //would not reach min size
-            {
-                scale -= decrease;
-            }
-
-            transform.localScale = new Vector3(scale, scale, transform.localScale.z); // shrink player
-            timer.UpdateScaledTime(); //scale shrink timer
-            ScaleMovementSpeed(); //scale movement speed
-            at.ScaleAttackRate(); //scale attack delay
+            scale = minScale;
         }
-        
+        else //would not reach min size
+        {
+            scale -= decrease;
+        }
+
+        transform.localScale = new Vector3(scale, scale, transform.localScale.z); // shrink player
+        shrinkTimer.ScaleTimer(); //scale shrink timer
+        ScaleMovementSpeed(); //scale movement speed
+        at.ScaleAttackRate(); //scale attack delay
+
     }
 
     /// <summary>
@@ -172,7 +167,7 @@ public class PlayerController : MonoBehaviour
     /// True if the player is at maximum
     /// scale, false otherwise.
     /// </returns>
-    private bool AtMaximumScale()
+    public bool AtMaximumScale()
     {
         return (scale == maxScale);
     }
@@ -185,7 +180,7 @@ public class PlayerController : MonoBehaviour
     /// True if the player is at minimum
     /// scale, false otherwise.
     /// </returns>
-    private bool AtMinimumScale()
+    public bool AtMinimumScale()
     {
         return (scale == minScale);
     }

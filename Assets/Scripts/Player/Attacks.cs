@@ -8,7 +8,7 @@ using Vector2 = UnityEngine.Vector2;
 // ReSharper disable All
 
 /// <summary>
-/// Class that handles the player's
+/// Script that handles the player's
 /// attacks, including animations and
 /// making attacks against buildings
 /// and other players.
@@ -17,9 +17,9 @@ public class Attacks : MonoBehaviour
 {
     public PlayerController pc;
     public ComboList combos; //
-    public int baseDamage;
-    public float maxAttackRate; //most number of times player can attack in a second
-    public float minAttackRate; //least number of times player can attack in a second
+    public float baseDamage = 10f;
+    public float maxAttackRate = 3f; //most number of times player can attack in a second
+    public float minAttackRate = 1f; //least number of times player can attack in a second
     
     private float attackRateModifier; //intervals of attack rate decrease
     private float attackRate; //scaled number of times player can attack in a second
