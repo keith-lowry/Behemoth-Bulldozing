@@ -12,10 +12,10 @@ using UnityEngine;
 /// </summary>
 public class ScalingTimer : MonoBehaviour
 {
-    public PlayerController pc;
     public float maxTime = 10f; //max duration of timer
     public float minTime = 3f;  //min duration of timer
 
+    protected PlayerController pc;
     private float timeModifier; //increments for scaling the timer's duration
     private float time; //the current duration of the timer
     protected float timeLeft; //running time left in timer
@@ -53,15 +53,18 @@ public class ScalingTimer : MonoBehaviour
     }
 
     /// <summary>
-    /// Initializes the timer with a timeModifier
-    /// and scales its duration to match the player's
-    /// scale. Should be called in Awake().
+    /// Initializes the timer's PlayerController component
+    /// and timeModifier. Scales the timer's duration to the
+    /// player's beginning scale.
+    ///
+    /// Must be called in Start().
     /// </summary>
     protected void SetUp()
     {
+        pc = GetComponent<PlayerController>();
+
         timeModifier = (maxTime - minTime) / (pc.maxScale - pc.minScale);
-        time = maxTime; // IMPORTANT: does not call ScaleTimer() when initialized
-                        // Assumption that player begins game at minScale
+        ScaleTimer();
     }
 
     /// <summary>

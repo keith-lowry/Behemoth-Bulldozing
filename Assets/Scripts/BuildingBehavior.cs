@@ -37,7 +37,7 @@ public class BuildingBehavior : MonoBehaviour
     /// </param>
     public void TakeDamage(int damage, PlayerController pc)
     {
-        pc.shrinkTimer.Reset(); //reset shrink timer
+        pc.GetShrinkTimer().Reset(); //reset shrink timer
 
         if (pc.GetScale() >= scale)
         {

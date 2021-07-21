@@ -15,21 +15,23 @@ using Vector2 = UnityEngine.Vector2;
 /// </summary>
 public class Attacks : MonoBehaviour
 {
-    public PlayerController pc;
-    public ComboList combos; //
     public float baseDamage = 10f;
     public float maxAttackRate = 3f; //most number of times player can attack in a second
     public float minAttackRate = 1f; //least number of times player can attack in a second
-    
+
+    public PlayerController pc;
+    public ComboList combos;
+    private SpriteRenderer sr;
     private float attackRateModifier; //intervals of attack rate decrease
     private float attackRate; //scaled number of times player can attack in a second
-    private SpriteRenderer sr;
     private float nextAttack; //time of next attack
 
-    // Start is called before the first frame update
     void Start()
     {
+        pc = GetComponent<PlayerController>();
+        combos = GetComponent<ComboList>();
         sr = GetComponent<SpriteRenderer>();
+
         nextAttack = 0f;
         attackRateModifier = (maxAttackRate - minAttackRate) / (pc.maxScale - pc.minScale); //calculate "steps" btw max and min delay
         ScaleAttackRate();

@@ -17,25 +17,27 @@ using Vector3 = UnityEngine.Vector3;
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    public Attacks at;
-    public ShrinkTimer shrinkTimer;
     public float maxScale = 5f; //maximum player size
     public float minScale = 1f; //minimum player size
     public float growthRate = 0.1f; //base growth rate
     public float maxMovementSpeed = 0.9f; //fastest speed the player can move
     public float minMovementSpeed = 0.3f; //slowest speed the player can move
 
+
+    private Attacks at;
+    private ShrinkTimer shrinkTimer;
+    private Rigidbody2D rb;
+    private SpriteRenderer sr;
     private float movementSpeedModifier; //intervals of movement speed decrease
     private float movementSpeed;
     private float scale; //current player scale
-    private Rigidbody2D rb;
-    private SpriteRenderer sr;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        at = GetComponent<Attacks>();
+        shrinkTimer = GetComponent<ShrinkTimer>();
         
         scale = minScale;
         transform.localScale = new Vector3(scale, scale, transform.localScale.z); //Player is initialized to minScale by default
@@ -73,6 +75,19 @@ public class PlayerController : MonoBehaviour
     public float GetScale()
     {
         return scale;
+    }
+
+    /// <summary>
+    /// Gets the player's ShrinkTimer
+    /// component.
+    /// </summary>
+    /// <returns>
+    /// The player's ShrinkTimer
+    /// component.
+    /// </returns>
+    public ShrinkTimer GetShrinkTimer()
+    {
+        return shrinkTimer;
     }
 
     /// <summary>

@@ -11,13 +11,13 @@ using UnityEngine;
 /// </summary>
 public class ComboList : MonoBehaviour
 {
-    public Attacks at;
-
+    private Attacks at;
     private List<KeyCode> keys;
 
     // Start is called before the first frame update
     void Start()
     {
+        at = GetComponent<Attacks>();
         keys = new List<KeyCode>(3); //initialize list with capacity of 3
                                      //for 3 types of attacks
     }
