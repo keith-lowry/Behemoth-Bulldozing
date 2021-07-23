@@ -60,8 +60,8 @@ public class PlayerController : MonoBehaviour
         //animator control
 
         //movement control
-        float inputY = Input.GetAxisRaw("Vertical");
-        float inputX = Input.GetAxisRaw("Horizontal");
+        float inputY = Input.GetAxis("Vertical");
+        float inputX = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(inputX * movementSpeed, inputY * movementSpeed);
     }
 
