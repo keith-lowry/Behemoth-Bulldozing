@@ -29,7 +29,7 @@ public class ShrinkTimer : ScalingTimer
 
         if (CanShrink())
         {
-            pc.Shrink(); //shrink player
+            pc.Shrink();
             nextShrink = Time.time + shrinkDelay;
         }
 

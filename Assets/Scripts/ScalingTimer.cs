@@ -14,11 +14,22 @@ public class ScalingTimer : MonoBehaviour
 {
     public float maxTime = 10f; //max duration of timer
     public float minTime = 3f;  //min duration of timer
+    public ScalingEnum scaleWith;
 
     protected PlayerController pc;
     private float timeModifier; //increments for scaling the timer's duration
     private float time; //the current duration of the timer
     protected float timeLeft; //running time left in timer
+
+    /// <summary>
+    /// Enum determining whether the timer
+    /// scales up or down in duration as
+    /// the player's scale increases.
+    /// </summary>
+    public enum ScalingEnum
+    {
+        ScaleUp, ScaleDown
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -62,7 +73,6 @@ public class ScalingTimer : MonoBehaviour
     protected void SetUp()
     {
         pc = GetComponent<PlayerController>();
-
         timeModifier = (maxTime - minTime) / (pc.maxScale - pc.minScale);
         ScaleTimer();
     }
@@ -78,8 +88,30 @@ public class ScalingTimer : MonoBehaviour
     /// <summary>
     /// Scales the Timer's duration to
     /// the player's current scale.
+    ///
+    /// Follows the scaling rule chosen
+    /// by the ScalingEnum.
     /// </summary>
     public void ScaleTimer()
+    {
+        Invoke(scaleWith.ToString(), 0f);
+    }
+    
+    /// <summary>
+    /// Scale the timer's duration up
+    /// with player scale.
+    /// </summary>
+    private void ScaleUp()
+    {
+        float increase = (pc.GetScale() - pc.minScale) * timeModifier;
+        time = minTime + increase;
+    }
+
+    /// <summary>
+    /// Scale the timer's duration down
+    /// with player scale.
+    /// </summary>
+    private void ScaleDown()
     {
         float decrease = (pc.GetScale() - pc.minScale) * timeModifier;
         time = maxTime - decrease;

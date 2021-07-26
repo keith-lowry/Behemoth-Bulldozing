@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         at = GetComponent<Attacks>();
         shrinkTimer = GetComponent<ShrinkTimer>();
-        
+
         scale = minScale;
         transform.localScale = new Vector3(scale, scale, transform.localScale.z); //Player is initialized to minScale by default
 
@@ -140,11 +140,10 @@ public class PlayerController : MonoBehaviour
             scale -= decrease;
         }
 
-        transform.localScale = new Vector3(scale, scale, transform.localScale.z); // shrink player
+        transform.localScale = new Vector3(scale, scale, transform.localScale.z); //shrink player
         shrinkTimer.ScaleTimer(); //scale shrink timer
         ScaleMovementSpeed(); //scale movement speed
         at.ScaleAttackRate(); //scale attack delay
-
     }
 
     /// <summary>
