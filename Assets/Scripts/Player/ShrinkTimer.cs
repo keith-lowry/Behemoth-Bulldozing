@@ -7,6 +7,9 @@ using UnityEngine;
 /// ScalingTimer that tells the player to
 /// shrink when time runs out and certain
 /// conditions are fulfilled.
+///
+/// Scales down in duration with player's
+/// scale.
 /// </summary>
 public class ShrinkTimer : ScalingTimer
 {
@@ -18,7 +21,8 @@ public class ShrinkTimer : ScalingTimer
     void Start()
     {
         SetUp();
-        
+
+        scaleTimer = ScalingEnum.ScaleDown;
         nextShrink = 0f;
     }
 

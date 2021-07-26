@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Audio;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -53,7 +54,7 @@ public class PlayerController : MonoBehaviour
         Vector3 relativePos = GetCursorDirection();
         float angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg; // Get angle of cursor, convert to degrees
         angle -= 90f;                                                            // North is considered the front, subtract 90 degrees
-        angle = (float) Math.Round(angle, 1);
+        angle = (float)Math.Round(angle, 1);
         Quaternion rotation = UnityEngine.Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = rotation;
 

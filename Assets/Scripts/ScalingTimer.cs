@@ -14,7 +14,7 @@ public class ScalingTimer : MonoBehaviour
 {
     public float maxTime = 10f; //max duration of timer
     public float minTime = 3f;  //min duration of timer
-    public ScalingEnum scaleWith;
+    public ScalingEnum scaleTimer;
 
     protected PlayerController pc;
     private float timeModifier; //increments for scaling the timer's duration
@@ -94,7 +94,7 @@ public class ScalingTimer : MonoBehaviour
     /// </summary>
     public void ScaleTimer()
     {
-        Invoke(scaleWith.ToString(), 0f);
+        Invoke(scaleTimer.ToString(), 0f);
     }
     
     /// <summary>
