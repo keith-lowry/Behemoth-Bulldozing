@@ -127,8 +127,8 @@ public class Attacks : MonoBehaviour
     {
         nextAttack = Time.time +  (1f / attackRate); //calculate time of next attack
 
-        Vector2 origin = new Vector2(transform.position.x, transform.position.y); //raycast origin
-        Vector2 direction = pc.GetCursorDirection(); //raycast direction
+        Vector2 origin = new Vector2(transform.position.x, transform.position.y); 
+        Vector2 direction = pc.GetCursorDirection(); 
 
         // TODO: tweak raycast size for different player scales?
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, sr.size.x * pc.GetScale(), LayerMask.GetMask("Buildings")); //make cast
