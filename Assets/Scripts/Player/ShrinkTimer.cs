@@ -8,7 +8,7 @@ using UnityEngine;
 /// shrink when time runs out and certain
 /// conditions are fulfilled.
 ///
-/// Scales down in duration with player's
+/// Scales down in duration with the player's
 /// scale.
 /// </summary>
 public class ShrinkTimer : ScalingTimer
