@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.ConstrainedExecution;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Vector2 = UnityEngine.Vector2;
 // ReSharper disable All
 
@@ -19,8 +20,12 @@ public class Attacks : MonoBehaviour
     public float maxAttackRate = 3f; //most number of times player can attack in a second
     public float minAttackRate = 1f; //least number of times player can attack in a second
 
-    public PlayerController pc;
-    public ComboList combos;
+    public KeyCode kickKey = KeyCode.F;
+    public KeyCode leftPunchKey = KeyCode.Mouse0;
+    public KeyCode rightPunchKey = KeyCode.Mouse1;
+
+    private PlayerController pc;
+    private ComboList combos;
     private SpriteRenderer sr;
     private float attackRateModifier; //intervals of attack rate decrease
     private float attackRate; //scaled number of times player can attack in a second
@@ -41,54 +46,19 @@ public class Attacks : MonoBehaviour
     void Update()
     {
         // attack control
-        if (Input.GetKey(KeyCode.Mouse0))
-        {
-            PunchLeft(); //left punch
-        }
-
-        if (Input.GetKey(KeyCode.Mouse1))
-        {
-            PunchRight(); //right punch
-        }
-
-        if (Input.GetKey(KeyCode.F))
+        if (Input.GetKeyDown(kickKey)) //kick only on key down
         {
             Kick(); //kick
         }
-    }
-
-    /// <summary>
-    /// Player punches in the direction of the
-    /// cursor with their right hand.
-    /// </summary>
-    public void PunchRight()
-    { 
-        //make attack if it's part of a combo or delay has elapsed
-        if (combos.Add(KeyCode.Mouse1) || Time.time >= nextAttack)
+        else if (Input.GetKey(leftPunchKey))
         {
-            //animation control
-
-            //TODO: call Dash()
-
-            Attack();
+            LeftPunch(); //left punch
         }
-    }
-
-    /// <summary>
-    /// Player punches in the direction of the
-    /// cursor with their left hand.
-    /// </summary>
-    public void PunchLeft()
-    {
-        //make attack if it's part of a combo or delay has elapsed
-        if (combos.Add(KeyCode.Mouse0) || Time.time >= nextAttack)
+        else if (Input.GetKey(rightPunchKey))
         {
-            //animation control
-
-            //TODO: call Dash()
-
-            Attack();
+            RightPunch(); //right punch
         }
+
     }
 
     /// <summary>
@@ -98,12 +68,46 @@ public class Attacks : MonoBehaviour
     public void Kick()
     {
         //make attack if it's part of a combo or delay has elapsed
-        if (combos.Add(KeyCode.F) || Time.time >= nextAttack)
+        if (combos.Add(kickKey) || Time.time >= nextAttack)
         {
             //animation control
 
             //TODO: call Dash()
+            Debug.Log("Kick");
+            Attack();
+        }
+    }
 
+    /// <summary>
+    /// Player punches in the direction of the
+    /// cursor with their left hand.
+    /// </summary>
+    public void LeftPunch()
+    {
+        //make attack if it's part of a combo or delay has elapsed
+        if (combos.Add(leftPunchKey) || Time.time >= nextAttack)
+        {
+            //animation control
+
+            //TODO: call Dash()
+            Debug.Log("Punch Left");
+            Attack();
+        }
+    }
+
+    /// <summary>
+    /// Player punches in the direction of the
+    /// cursor with their right hand.
+    /// </summary>
+    public void RightPunch()
+    { 
+        //make attack if it's part of a combo or delay has elapsed
+        if (combos.Add(rightPunchKey) || Time.time >= nextAttack)
+        {
+            //animation control
+
+            //TODO: call Dash()
+            Debug.Log("Punch Right");
             Attack();
         }
     }

@@ -140,10 +140,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 500910828025492960, guid: df53a64394fedf246b8978ef8be25e35, type: 3}
-      propertyPath: growthRate
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 5496188574627017682, guid: df53a64394fedf246b8978ef8be25e35, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -191,10 +187,6 @@ PrefabInstance:
     - target: {fileID: 5930799860840032819, guid: df53a64394fedf246b8978ef8be25e35, type: 3}
       propertyPath: m_Name
       value: Player1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7349101263373956515, guid: df53a64394fedf246b8978ef8be25e35, type: 3}
-      propertyPath: scaleTimer
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df53a64394fedf246b8978ef8be25e35, type: 3}

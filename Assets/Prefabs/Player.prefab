@@ -147,11 +147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b5a2795baafea146a7b3ab467235cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  at: {fileID: 454786067193892742}
-  shrinkTimer: {fileID: 7349101263373956515}
   maxScale: 5
   minScale: 1
-  growthRate: 0.1
+  growthRate: 0.5
   maxMovementSpeed: 0.9
   minMovementSpeed: 0.5
 --- !u!114 &7349101263373956515
@@ -166,9 +164,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb9e73a9483c92f41b66457595365489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pc: {fileID: 500910828025492960}
   maxTime: 10
   minTime: 3
+  scaleTimer: 1
   shrinkDelay: 0.2
 --- !u!114 &454786067193892742
 MonoBehaviour:
@@ -182,11 +180,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5d040cd65aad7440915a3b002054a65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pc: {fileID: 500910828025492960}
-  combos: {fileID: 400634965481325180}
-  baseDamage: 10
+  baseDamage: 0
   maxAttackRate: 3
   minAttackRate: 1
+  kickKey: 102
+  leftPunchKey: 323
+  rightPunchKey: 324
 --- !u!114 &400634965481325180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,4 +198,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c6d32d040a4864094a407421ff9d16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  at: {fileID: 454786067193892742}
