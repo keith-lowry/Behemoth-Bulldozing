@@ -30,9 +30,13 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private float movementSpeedModifier; //intervals of movement speed decrease
-    private float movementSpeed;
+    private float movementSpeed; //movement speed scaled to player's current size
+    private float inputX;
+    private float inputY;
     private float scale; //current player scale
 
+    //Awake is called when the script instance is being loaded
+    //called before Start()
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -40,11 +44,10 @@ public class PlayerController : MonoBehaviour
         at = GetComponent<Attacks>();
         shrinkTimer = GetComponent<ShrinkTimer>();
 
-        scale = minScale;
-        transform.localScale = new Vector3(scale, scale, transform.localScale.z); //Player is initialized to minScale by default
+        scale = minScale; //Player is initialized to minScale by default
+        movementSpeedModifier = (maxMovementSpeed - minMovementSpeed) / (maxScale - minScale); // calculate "steps" btw max and min movement speed
 
-        movementSpeedModifier = (maxMovementSpeed - minMovementSpeed) / (maxScale - minScale); // calculate "steps" btw max and min movementspeed
-        ScaleMovementSpeed();
+        Scale();
     }
 
     // Update is called once per frame
@@ -54,15 +57,21 @@ public class PlayerController : MonoBehaviour
         Vector3 relativePos = GetCursorDirection();
         float angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg; // Get angle of cursor, convert to degrees
         angle -= 90f;                                                            // North is considered the front, subtract 90 degrees
-        angle = (float)Math.Round(angle, 1);
+        angle = (float) Math.Round(angle, 1);
         Quaternion rotation = UnityEngine.Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = rotation;
 
         //animator control
 
+        //gather movement inputs
+        inputY = Input.GetAxis("Vertical");
+        inputX = Input.GetAxis("Horizontal");
+    }
+
+    //FixedUpdate is called every fixed framerate frame
+    void FixedUpdate()
+    {
         //movement control
-        float inputY = Input.GetAxis("Vertical");
-        float inputX = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(inputX * movementSpeed, inputY * movementSpeed);
     }
 
@@ -97,11 +106,11 @@ public class PlayerController : MonoBehaviour
     /// 
     /// Called when the player destroys a building.
     /// </summary>
-    /// <para>
-    /// "scale" scale of the
+    /// <param name="buildingScale">
+    /// Scale of the
     /// building the player destroyed.
-    /// </para>
-    public void Grow(int buildingScale)
+    /// </param>
+    public void Grow(float buildingScale)
     {
 
         float increase = growthRate * buildingScale;
@@ -115,10 +124,10 @@ public class PlayerController : MonoBehaviour
             scale += increase;
         }
 
-        transform.localScale = new Vector3(scale, scale, transform.localScale.z); //scale up player
-        shrinkTimer.ScaleTimer(); //scale shrink timer
-        ScaleMovementSpeed(); //scale movement speed
-        at.ScaleAttackRate(); //scale attack delay
+        //Scale player and components
+        Scale();
+        shrinkTimer.Scale();
+        at.Scale(); 
     }
 
     /// <summary>
@@ -141,14 +150,14 @@ public class PlayerController : MonoBehaviour
             scale -= decrease;
         }
 
-        transform.localScale = new Vector3(scale, scale, transform.localScale.z); //shrink player
-        shrinkTimer.ScaleTimer(); //scale shrink timer
-        ScaleMovementSpeed(); //scale movement speed
-        at.ScaleAttackRate(); //scale attack delay
+        //Scale player and components
+        Scale();
+        shrinkTimer.Scale();
+        at.Scale(); 
     }
 
     /// <summary>
-    /// Moves the player sprite forward a bit
+    /// Moves the player transform forward
     /// in the direction of the cursor.
     /// </summary>
     public void Dash()
@@ -166,12 +175,12 @@ public class PlayerController : MonoBehaviour
     /// </returns>
     public Vector2 GetCursorDirection()
     {
-        Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 position = new Vector3(transform.position.x, transform.position.y, transform.position.y);
-        Vector2 direction = target - position;
-        direction.Normalize();
+        Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 playerPosition = new Vector3(transform.position.x, transform.position.y, transform.position.y);
+        Vector2 cursorDirection = cursorPosition - playerPosition;
+        cursorDirection.Normalize();
 
-        return direction;
+        return cursorDirection;
     }
 
     /// <summary>
@@ -202,11 +211,13 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// Scales the player's movement speed
-    /// to their scale.
+    /// and size to their current scale.
     /// </summary>
-    private void ScaleMovementSpeed()
+    private void Scale()
     {
-        float decrease = (scale - minScale) * movementSpeedModifier;
-        movementSpeed = maxMovementSpeed - decrease;
+        float movementSpeedDecrease = (scale - minScale) * movementSpeedModifier;
+        movementSpeed = maxMovementSpeed - movementSpeedDecrease;
+
+        transform.localScale = new Vector3(scale, scale, transform.localScale.z);
     }
 }

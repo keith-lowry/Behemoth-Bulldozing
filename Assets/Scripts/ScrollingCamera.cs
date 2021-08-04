@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Script that makes camera move horizontally
+/// Script that makes the camera move horizontally
 /// at a constant speed after a given delay.
+///
+/// Camera must have a rigidbody attached.
 /// </summary>
 public class ScrollingCamera : MonoBehaviour
 {
@@ -22,7 +24,7 @@ public class ScrollingCamera : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the cameras velocity.
+    /// Sets the camera's velocity.
     /// </summary>
     private void UpdateVelocity()
     {

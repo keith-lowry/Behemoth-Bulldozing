@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Class for handling the behavior of
-/// UI quit buttons.
+/// Script for handling the behavior of
+/// Quit Buttons.
 /// </summary>
-public class UIQuitButton : MonoBehaviour, UIButtonBehavior
+public class QuitButton : MonoBehaviour, IButtonBehavior
 {
     // Quit Game on click
     public void OnClick()

@@ -4,13 +4,13 @@ using UnityEngine;
 // ReSharper disable All
 
 /// <summary>
-/// Behavior script for Building objects. Buildings
-/// can take damage from players and be destroyed.
+/// Script for handling the behavior of Building objects.
+/// Buildings can take damage from players and be destroyed.
 /// </summary>
 public class BuildingBehavior : MonoBehaviour
 {
-    public int health;
-    public int scale;
+    public float health;
+    public float scale;
 
     private SpriteRenderer sr;
 
@@ -25,8 +25,8 @@ public class BuildingBehavior : MonoBehaviour
     /// player if the player's scale is greater
     /// than or equal to that of the building.
     /// 
-    /// Calls DestroyBuilding() if health 
-    /// reaches zero.
+    /// Destroys the building if health reaches
+    /// 0.
     /// </summary>
     /// <param name="damage">
     /// Damage to be taken by the building.
@@ -35,7 +35,7 @@ public class BuildingBehavior : MonoBehaviour
     /// PlayerController of the player inflicting
     /// damage.
     /// </param>
-    public void TakeDamage(int damage, PlayerController pc)
+    public void TakeDamage(float damage, PlayerController pc)
     {
         pc.GetShrinkTimer().Reset(); //reset shrink timer
 

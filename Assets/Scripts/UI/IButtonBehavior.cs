@@ -6,10 +6,10 @@ using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
 /// <summary>
-/// Interface for handling main behavior for
-/// UI buttons when clicked.
+/// Interface for handling main behavior of
+/// Buttons when they are clicked.
 /// </summary>
-public interface UIButtonBehavior
+public interface IButtonBehavior
 {
 
     /// <summary>

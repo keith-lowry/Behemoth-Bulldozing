@@ -16,7 +16,7 @@ using Vector2 = UnityEngine.Vector2;
 /// </summary>
 public class Attacks : MonoBehaviour
 {
-    public float baseDamage = 10f;
+    public float baseAttack = 10f;
     public float maxAttackRate = 3f; //most number of times player can attack in a second
     public float minAttackRate = 1f; //least number of times player can attack in a second
 
@@ -27,8 +27,9 @@ public class Attacks : MonoBehaviour
     private PlayerController pc;
     private ComboList combos;
     private SpriteRenderer sr;
+    private float attack; //attack damage scaled to player's current size
     private float attackRateModifier; //intervals of attack rate decrease
-    private float attackRate; //scaled number of times player can attack in a second
+    private float attackRate; //attack rate scaled to player's current size
     private float nextAttack; //time of next attack
 
     void Start()
@@ -38,41 +39,54 @@ public class Attacks : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
 
         nextAttack = 0f;
-        attackRateModifier = (maxAttackRate - minAttackRate) / (pc.maxScale - pc.minScale); //calculate "steps" btw max and min delay
-        ScaleAttackRate();
+        attackRateModifier = (maxAttackRate - minAttackRate) / (pc.maxScale - pc.minScale); //calculate "steps" btw max and min attack rate
+        Scale();
     }
 
     // Update is called once per frame
     void Update()
     {
         // attack control
-        if (Input.GetKeyDown(kickKey)) //kick only on key down
+        if (Input.GetKeyDown(kickKey)) //kick only once per press
         {
-            Kick(); //kick
+            Kick();
         }
-        else if (Input.GetKey(leftPunchKey))
+        else if (Input.GetKey(leftPunchKey)) //punches repeat
         {
-            LeftPunch(); //left punch
+            LeftPunch();
         }
         else if (Input.GetKey(rightPunchKey))
         {
-            RightPunch(); //right punch
+            RightPunch();
         }
+    }
 
+    /// <summary>
+    /// Scales the player's attack rate and attack
+    /// to their current scale.
+    /// </summary>
+    public void Scale()
+    {
+        float attackRateDecrease = (pc.GetScale() - pc.minScale) * attackRateModifier;
+        attackRate = maxAttackRate - attackRateDecrease;
+
+        float attackIncrease = (pc.GetScale() - pc.minScale) * baseAttack;
+        attack = baseAttack + attackIncrease;
     }
 
     /// <summary>
     /// Player kicks in the direction of the
     /// cursor.
     /// </summary>
-    public void Kick()
+    private void Kick()
     {
-        //make attack if it's part of a combo or delay has elapsed
-        if (combos.Add(kickKey) || Time.time >= nextAttack)
+        if (CanAttack(kickKey))
         {
             //animation control
 
             //TODO: call Dash()
+
+            //make attack
             Debug.Log("Kick");
             Attack();
         }
@@ -82,15 +96,16 @@ public class Attacks : MonoBehaviour
     /// Player punches in the direction of the
     /// cursor with their left hand.
     /// </summary>
-    public void LeftPunch()
+    private void LeftPunch()
     {
-        //make attack if it's part of a combo or delay has elapsed
-        if (combos.Add(leftPunchKey) || Time.time >= nextAttack)
+        if (CanAttack(leftPunchKey))
         {
             //animation control
 
             //TODO: call Dash()
-            Debug.Log("Punch Left");
+
+            //make attack
+            Debug.Log("Left Punch");
             Attack();
         }
     }
@@ -99,33 +114,24 @@ public class Attacks : MonoBehaviour
     /// Player punches in the direction of the
     /// cursor with their right hand.
     /// </summary>
-    public void RightPunch()
-    { 
-        //make attack if it's part of a combo or delay has elapsed
-        if (combos.Add(rightPunchKey) || Time.time >= nextAttack)
+    private void RightPunch()
+    {
+        if (CanAttack(rightPunchKey))
         {
             //animation control
 
             //TODO: call Dash()
-            Debug.Log("Punch Right");
+
+            //make attack
+            Debug.Log("Right Punch");
             Attack();
         }
     }
 
     /// <summary>
-    /// Scales the player's attack delay to their
-    /// scale.
-    /// </summary>
-    public void ScaleAttackRate()
-    {
-        float decrease = (pc.GetScale() - pc.minScale) * attackRateModifier;
-        attackRate = maxAttackRate - decrease;
-    }
-
-    /// <summary>
     /// Makes an attack in front of the player with
     /// a raycast. If cast hits a building, it makes
-    /// it take damage.
+    /// it take damage equal to the player's attack.
     /// </summary>
     private void Attack()
     {
@@ -140,7 +146,7 @@ public class Attacks : MonoBehaviour
         if (hit)
         {
             BuildingBehavior bh = hit.transform.gameObject.GetComponent<BuildingBehavior>();
-            bh.TakeDamage(GetDamage(), pc); //make building take damage
+            bh.TakeDamage(attack, pc); //make building take damage
 
 
             //TODO: implement player knockback
@@ -148,14 +154,23 @@ public class Attacks : MonoBehaviour
     }
 
     /// <summary>
-    /// Calculate the damage the player deals to
-    /// a building with an attack.
+    /// Determines whether an attack can be
+    /// made.
+    ///
+    /// An attack can be made if it's associated
+    /// key is part of a combo, or if enough
+    /// time has elapsed between attacks.
     /// </summary>
-    /// <returns> 
-    /// Damage dealt to building.
+    /// <param name="attackKey">
+    /// The KeyCode associated with
+    /// the attack to be made.
+    /// </param>
+    /// <returns>
+    /// True if an attack can be made, false
+    /// otherwise.
     /// </returns>
-    private int GetDamage()
+    private bool CanAttack(KeyCode attackKey)
     {
-        return (int) (baseDamage * pc.GetScale()); //damage scales with size
+        return (combos.Add(attackKey) || Time.time >= nextAttack);
     }
 }

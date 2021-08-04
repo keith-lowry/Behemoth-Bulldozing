@@ -52,7 +52,7 @@ public class ShrinkTimer : ScalingTimer
     /// </returns>
     private bool CanShrink()
     {
-        return (timeLeft == 0 && Time.time >= nextShrink && !pc.AtMinimumScale());
+        return ((timeLeft == 0) && (Time.time >= nextShrink) && (!pc.AtMinimumScale()));
     }
 
 }

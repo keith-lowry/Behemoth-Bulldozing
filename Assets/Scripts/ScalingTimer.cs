@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Timer that scales in duration
-/// with the player's scale.
+/// Timer that scales in duration with the player's scale.
 ///
-/// The Timer gets shorter as the
-/// player increases in scale until
-/// it reaches maxScale.
+/// The Timer scales up or down in duration with the player's
+/// scale according to the chosen ScalingEnum.
 /// </summary>
 public class ScalingTimer : MonoBehaviour
 {
-    public float maxTime = 10f; //max duration of timer
-    public float minTime = 3f;  //min duration of timer
+    public float maxTime; //max duration of timer
+    public float minTime;  //min duration of timer
     public ScalingEnum scaleTimer;
 
     protected PlayerController pc;
@@ -74,7 +72,7 @@ public class ScalingTimer : MonoBehaviour
     {
         pc = GetComponent<PlayerController>();
         timeModifier = (maxTime - minTime) / (pc.maxScale - pc.minScale);
-        ScaleTimer();
+        Scale();
     }
 
     /// <summary>
@@ -92,7 +90,7 @@ public class ScalingTimer : MonoBehaviour
     /// Follows the scaling rule chosen
     /// by the ScalingEnum.
     /// </summary>
-    public void ScaleTimer()
+    public void Scale()
     {
         Invoke(scaleTimer.ToString(), 0f);
     }

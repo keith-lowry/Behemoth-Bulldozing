@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Class for raycasting to activate
-/// buttons in menu scenes.
+/// Script that allows for raycasting to activate
+/// Buttons.
 /// </summary>
 public class ClickHandler : MonoBehaviour
 {
@@ -22,11 +22,9 @@ public class ClickHandler : MonoBehaviour
 
             if (hit)
             {
-                UIButtonBehavior b = hit.collider.gameObject.GetComponent<UIButtonBehavior>();
-                b.OnClick();
+                IButtonBehavior b = hit.collider.gameObject.GetComponent<IButtonBehavior>();
+                b.OnClick(); //activate button
             }
-
         }
-
     }
 }

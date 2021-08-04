@@ -7,17 +7,17 @@ using UnityEngine;
 /// the hood to handle Combos behavior.
 ///
 /// Allows three attacks to be made in quick
-/// succession as long as they are unique.
+/// succession as long as they are unique. A
+/// combo can be completed at any time once it
+/// is started.
 /// </summary>
 public class ComboList : MonoBehaviour
 {
-    private Attacks at;
     private List<KeyCode> keys;
 
     // Start is called before the first frame update
     void Start()
     {
-        at = GetComponent<Attacks>();
         keys = new List<KeyCode>(3); //initialize list with capacity of 3
                                      //for 3 types of attacks
     }
@@ -79,7 +79,7 @@ public class ComboList : MonoBehaviour
     }
 
     /// <summary>
-    /// Chcks whether the list of
+    /// Checks whether the list of
     /// KeyCodes is empty.
     /// </summary>
     /// <returns>

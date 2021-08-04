@@ -10,11 +10,11 @@ public class CameraController : MonoBehaviour
 {
     public GameObject player;
 
-    private Vector3 offset;
+    private Vector3 offset; //offset btw player and camera
 
     void Awake()
     {
-        offset = transform.position - player.transform.position; // offset btw player and camera
+        offset = transform.position - player.transform.position;
     }
 
     // Update is called once per frame

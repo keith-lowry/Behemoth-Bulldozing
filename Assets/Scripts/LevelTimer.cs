@@ -4,25 +4,19 @@ using System.Transactions;
 using UnityEngine;
 
 /// <summary>
-/// Simple timer that ends the level once it reaches
-/// zero and loads the given scene.
+/// Simple timer that ends the level once time runs out
+/// and loads the given scene.
 /// </summary>
 public class LevelTimer : BasicTimer
 {
     public LevelLoader.SceneEnum nextScene;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
         TikTok();
 
-        if (timeLeft <= 0)
+        if (timeLeft == 0)
         {
             EndLevel();
         }
@@ -32,7 +26,7 @@ public class LevelTimer : BasicTimer
     /// Loads the next scene based on whether
     /// the player destroyed all buildings in time.
     /// </summary>
-    void EndLevel()
+    private void EndLevel()
     {
         LevelLoader.Load(nextScene);
     }
