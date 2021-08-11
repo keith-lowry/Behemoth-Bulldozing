@@ -17,8 +17,12 @@ using Vector2 = UnityEngine.Vector2;
 public class Attacks : MonoBehaviour
 {
     public float baseAttack = 10f;
-    public float maxAttackRate = 3f; //most number of times player can attack in a second
-    public float minAttackRate = 1f; //least number of times player can attack in a second
+
+    //most number of times player can attack in a second
+    public float maxAttackRate = 3f;
+
+    //least number of times player can attack in a second
+    public float minAttackRate = 1f; 
 
     public KeyCode kickKey = KeyCode.F;
     public KeyCode leftPunchKey = KeyCode.Mouse0;
@@ -39,7 +43,10 @@ public class Attacks : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
 
         nextAttack = 0f;
-        attackRateModifier = (maxAttackRate - minAttackRate) / (pc.maxScale - pc.minScale); //calculate "steps" btw max and min attack rate
+
+        //calculate "steps" btw max and min attack rate
+        attackRateModifier = (maxAttackRate - minAttackRate) / 
+                             (pc.maxScale - pc.minScale);      
         Scale();
     }
 
@@ -62,16 +69,21 @@ public class Attacks : MonoBehaviour
     }
 
     /// <summary>
-    /// Scales the player's attack rate and attack
+    /// Scales the player's attack rate, damage,
+    /// and the cooldown between their combos
     /// to their current scale.
     /// </summary>
     public void Scale()
     {
-        float attackRateDecrease = (pc.GetScale() - pc.minScale) * attackRateModifier;
+        float attackRateDecrease = (pc.GetScale() - pc.minScale) * 
+                                   attackRateModifier;
+
         attackRate = maxAttackRate - attackRateDecrease;
 
         float attackIncrease = (pc.GetScale() - pc.minScale) * baseAttack;
         attack = baseAttack + attackIncrease;
+
+        combos.Scale();
     }
 
     /// <summary>
@@ -87,7 +99,6 @@ public class Attacks : MonoBehaviour
             //TODO: call Dash()
 
             //make attack
-            Debug.Log("Kick");
             Attack();
         }
     }
@@ -105,7 +116,6 @@ public class Attacks : MonoBehaviour
             //TODO: call Dash()
 
             //make attack
-            Debug.Log("Left Punch");
             Attack();
         }
     }
@@ -123,7 +133,6 @@ public class Attacks : MonoBehaviour
             //TODO: call Dash()
 
             //make attack
-            Debug.Log("Right Punch");
             Attack();
         }
     }
@@ -135,17 +144,21 @@ public class Attacks : MonoBehaviour
     /// </summary>
     private void Attack()
     {
-        nextAttack = Time.time +  (1f / attackRate); //calculate time of next attack
+        nextAttack = Time.time +  (1f / attackRate); //get time of next attack
 
-        Vector2 origin = new Vector2(transform.position.x, transform.position.y); 
+        Vector2 origin = new Vector2(transform.position.x, 
+            transform.position.y); 
         Vector2 direction = pc.GetCursorDirection(); 
 
         // TODO: tweak raycast size for different player scales?
-        RaycastHit2D hit = Physics2D.Raycast(origin, direction, sr.size.x * pc.GetScale(), LayerMask.GetMask("Buildings")); //make cast
+        RaycastHit2D hit = Physics2D.
+            Raycast(origin, direction, sr.size.x * pc.GetScale(), 
+                LayerMask.GetMask("Buildings")); //make cast
 
         if (hit)
         {
-            BuildingBehavior bh = hit.transform.gameObject.GetComponent<BuildingBehavior>();
+            BuildingBehavior bh = hit.transform.gameObject.
+                GetComponent<BuildingBehavior>();
             bh.TakeDamage(attack, pc); //make building take damage
 
 

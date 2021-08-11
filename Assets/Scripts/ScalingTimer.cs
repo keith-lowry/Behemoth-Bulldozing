@@ -6,7 +6,9 @@ using UnityEngine;
 /// Timer that scales in duration with the player's scale.
 ///
 /// The Timer scales up or down in duration with the player's
-/// scale according to the chosen ScalingEnum.
+/// scale according to the chosen ScalingEnum. All classes
+/// that inherit from this script must call SetUp() in
+/// Start() after initializing the ScalingEnum field.
 /// </summary>
 public class ScalingTimer : MonoBehaviour
 {

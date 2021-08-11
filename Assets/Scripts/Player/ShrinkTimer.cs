@@ -20,10 +20,10 @@ public class ShrinkTimer : ScalingTimer
     // Start is called before the first frame update
     void Start()
     {
-        SetUp();
-
         scaleTimer = ScalingEnum.ScaleDown;
         nextShrink = 0f;
+
+        SetUp();
     }
 
     // Update is called once per frame
