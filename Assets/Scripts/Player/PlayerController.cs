@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Audio;
 using Quaternion = UnityEngine.Quaternion;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -11,37 +12,42 @@ using Vector3 = UnityEngine.Vector3;
 // ReSharper disable All
 
 /// <summary>
-/// Main class that controls player
-/// movement and communicates with
+/// Player controller script that handles
+/// player movement and communicates with
 /// other player classes.
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
-    public Attacks at;
-    public ShrinkTimer timer;
-    public float maxScale; //maximum player size
-    public float minScale; //minimum player size
-    public float growthRate; //base growth rate
-    public float maxMovementSpeed; //fastest speed the player can move
-    public float minMovementSpeed; //slowest speed the player can move
+    public float maxScale = 5f; //maximum player size
+    public float minScale = 1f; //minimum player size
+    public float growthRate = 0.1f; //base growth rate
+    public float maxMovementSpeed = 0.9f; //fastest speed the player can move
+    public float minMovementSpeed = 0.3f; //slowest speed the player can move
 
-    private float movementSpeedModifier; //intervals of movement speed decrease
-    private float movementSpeed;
-    private float scale; //current player scale
+
+    private Attacks at;
+    private ShrinkTimer shrinkTimer;
     private Rigidbody2D rb;
     private SpriteRenderer sr;
+    private float movementSpeedModifier; //intervals of movement speed decrease
+    private float movementSpeed; //movement speed scaled to player's current size
+    private float inputX;
+    private float inputY;
+    private float scale; //current player scale
 
-    // Start is called before the first frame update
-    void Start()
+    //Awake is called when the script instance is being loaded
+    //called before Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-        
-        scale = minScale;
-        transform.localScale = new Vector3(scale, scale, transform.localScale.z); //update player scale
+        at = GetComponent<Attacks>();
+        shrinkTimer = GetComponent<ShrinkTimer>();
 
-        movementSpeedModifier = (maxMovementSpeed - minMovementSpeed) / (maxScale - minScale); // calculate "steps" btw max and min movementspeed
-        ScaleMovementSpeed();
+        scale = minScale; //Player is initialized to minScale by default
+        movementSpeedModifier = (maxMovementSpeed - minMovementSpeed) / (maxScale - minScale); // calculate "steps" btw max and min movement speed
+
+        Scale();
     }
 
     // Update is called once per frame
@@ -57,9 +63,15 @@ public class PlayerController : MonoBehaviour
 
         //animator control
 
+        //gather movement inputs
+        inputY = Input.GetAxis("Vertical");
+        inputX = Input.GetAxis("Horizontal");
+    }
+
+    //FixedUpdate is called every fixed framerate frame
+    void FixedUpdate()
+    {
         //movement control
-        float inputY = Input.GetAxisRaw("Vertical");
-        float inputX = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(inputX * movementSpeed, inputY * movementSpeed);
     }
 
@@ -76,35 +88,46 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// Gets the player's ShrinkTimer
+    /// component.
+    /// </summary>
+    /// <returns>
+    /// The player's ShrinkTimer
+    /// component.
+    /// </returns>
+    public ShrinkTimer GetShrinkTimer()
+    {
+        return shrinkTimer;
+    }
+
+    /// <summary>
     /// Grow the player based on the scale
     /// of the building destroyed.
     /// 
     /// Called when the player destroys a building.
     /// </summary>
-    /// <para>
-    /// "scale" scale of the
+    /// <param name="buildingScale">
+    /// Scale of the
     /// building the player destroyed.
-    /// </para>
-    public void Grow(int buildingScale)
+    /// </param>
+    public void Grow(float buildingScale)
     {
-        if (!AtMaximumScale()) // not already at max scale
+
+        float increase = growthRate * buildingScale;
+
+        if ((scale + increase) >= maxScale) //would reach max size
         {
-            float increase = growthRate * buildingScale;
-
-            if ((scale + increase) >= maxScale) //would reach max size
-            {
-                scale = maxScale;
-            }
-            else //would not reach max size
-            {
-                scale += increase;
-            }
-
-            transform.localScale = new Vector3(scale, scale, transform.localScale.z); //scale up player
-            timer.UpdateScaledTime(); //scale shrink timer
-            ScaleMovementSpeed(); //scale movement speed
-            at.ScaleAttackRate(); //scale attack delay
+            scale = maxScale;
         }
+        else //would not reach max size
+        {
+            scale += increase;
+        }
+
+        //Scale player and components
+        Scale();
+        shrinkTimer.Scale();
+        at.Scale(); 
     }
 
     /// <summary>
@@ -116,29 +139,25 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Shrink()
     {
-        if (!AtMinimumScale())
+        float decrease = growthRate;
+
+        if ((scale - decrease) <= minScale) //would reach min size
         {
-            float decrease = growthRate;
-
-            if ((scale - decrease) <= minScale) //would reach min size
-            {
-                scale = minScale;
-            }
-            else //would not reach min size
-            {
-                scale -= decrease;
-            }
-
-            transform.localScale = new Vector3(scale, scale, transform.localScale.z); // shrink player
-            timer.UpdateScaledTime(); //scale shrink timer
-            ScaleMovementSpeed(); //scale movement speed
-            at.ScaleAttackRate(); //scale attack delay
+            scale = minScale;
         }
-        
+        else //would not reach min size
+        {
+            scale -= decrease;
+        }
+
+        //Scale player and components
+        Scale();
+        shrinkTimer.Scale();
+        at.Scale(); 
     }
 
     /// <summary>
-    /// Moves the player sprite forward a bit
+    /// Moves the player transform forward
     /// in the direction of the cursor.
     /// </summary>
     public void Dash()
@@ -156,12 +175,12 @@ public class PlayerController : MonoBehaviour
     /// </returns>
     public Vector2 GetCursorDirection()
     {
-        Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 position = new Vector3(transform.position.x, transform.position.y, transform.position.y);
-        Vector2 direction = target - position;
-        direction.Normalize();
+        Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 playerPosition = new Vector3(transform.position.x, transform.position.y, transform.position.y);
+        Vector2 cursorDirection = cursorPosition - playerPosition;
+        cursorDirection.Normalize();
 
-        return direction;
+        return cursorDirection;
     }
 
     /// <summary>
@@ -172,7 +191,7 @@ public class PlayerController : MonoBehaviour
     /// True if the player is at maximum
     /// scale, false otherwise.
     /// </returns>
-    private bool AtMaximumScale()
+    public bool AtMaximumScale()
     {
         return (scale == maxScale);
     }
@@ -185,18 +204,20 @@ public class PlayerController : MonoBehaviour
     /// True if the player is at minimum
     /// scale, false otherwise.
     /// </returns>
-    private bool AtMinimumScale()
+    public bool AtMinimumScale()
     {
         return (scale == minScale);
     }
 
     /// <summary>
     /// Scales the player's movement speed
-    /// to their scale.
+    /// and size to their current scale.
     /// </summary>
-    private void ScaleMovementSpeed()
+    private void Scale()
     {
-        float decrease = (scale - minScale) * movementSpeedModifier;
-        movementSpeed = maxMovementSpeed - decrease;
+        float movementSpeedDecrease = (scale - minScale) * movementSpeedModifier;
+        movementSpeed = maxMovementSpeed - movementSpeedDecrease;
+
+        transform.localScale = new Vector3(scale, scale, transform.localScale.z);
     }
 }

@@ -588,14 +588,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3613817986978942544, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942544, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942544, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -634,66 +626,6 @@ PrefabInstance:
     - target: {fileID: 3613817986978942544, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942545, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 8dbe03bd2e09b654b83e6a3451a9fb58, type: 3}
-    - target: {fileID: 3613817986978942545, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942545, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 625062477
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942546, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_Size.x
-      value: 0.9041449
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942546, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_Size.y
-      value: 0.2629586
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942546, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_Offset.x
-      value: -0.0026562363
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942546, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_Offset.y
-      value: 0.006554663
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942546, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_EdgeRadius
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942546, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_SpriteTilingProperty.border.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942546, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_SpriteTilingProperty.border.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942546, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_SpriteTilingProperty.border.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942546, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_SpriteTilingProperty.border.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942546, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942546, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3613817986978942547, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
-      propertyPath: nextScene
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3613817986978942550, guid: 08beb855a7f52ac44990fe42be8174bd, type: 3}
       propertyPath: m_Name
@@ -790,14 +722,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2013503835226742691, guid: 1b68b9b70998a5a4d82ba0f0b27fea8e, type: 3}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2013503835226742691, guid: 1b68b9b70998a5a4d82ba0f0b27fea8e, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 625062477
-      objectReference: {fileID: 0}
     - target: {fileID: 2013503835226742692, guid: 1b68b9b70998a5a4d82ba0f0b27fea8e, type: 3}
       propertyPath: m_Name
       value: Play Button
@@ -814,14 +738,6 @@ PrefabInstance:
     - target: {fileID: 1763852315203674641, guid: df3cc549c44253448907af5a38b54474, type: 3}
       propertyPath: m_Name
       value: Quit Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 1763852315203674646, guid: df3cc549c44253448907af5a38b54474, type: 3}
-      propertyPath: m_SortingLayer
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1763852315203674646, guid: df3cc549c44253448907af5a38b54474, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 625062477
       objectReference: {fileID: 0}
     - target: {fileID: 1763852315203674647, guid: df3cc549c44253448907af5a38b54474, type: 3}
       propertyPath: m_RootOrder

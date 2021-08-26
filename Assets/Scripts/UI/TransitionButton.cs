@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Class for behavior of scene transition
-/// buttons.
+/// Script for handling the behavior of
+/// Scene Transition Buttons.
 /// </summary>
-public class UITransitionButton : MonoBehaviour, UIButtonBehavior
+public class TransitionButton : MonoBehaviour, IButtonBehavior
 {
     public LevelLoader.SceneEnum nextScene;
 

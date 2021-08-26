@@ -2,17 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Script with list of KeyCodes under
+/// the hood to handle Combos behavior.
+///
+/// Allows three attacks to be made in quick
+/// succession as long as they are unique. A
+/// combo can be completed at any time once it
+/// is started.
+/// </summary>
 public class ComboList : MonoBehaviour
 {
-    public Attacks at;
-
     private List<KeyCode> keys;
+    private ComboCooldownTimer comboTimer;
 
     // Start is called before the first frame update
     void Start()
     {
         keys = new List<KeyCode>(3); //initialize list with capacity of 3
                                      //for 3 types of attacks
+        
+        comboTimer = GetComponent<ComboCooldownTimer>();
     }
 
     /// <summary>
@@ -34,28 +44,50 @@ public class ComboList : MonoBehaviour
     /// </returns>
     public bool Add(KeyCode keyPressed)
     {
-        if (keys.Contains(keyPressed)) //not a unique attack in combo
+        if (comboTimer.CanCombo())
         {
-            keys.Clear(); //clear list, combo lost
-            return false;
-        }
-        else //unique attack in combo
-        {
-            if (IsEmpty()) //first attack in combo, has delay
+
+            if (keys.Contains(keyPressed)) //not a unique attack in combo
             {
-                keys.Add(keyPressed);
+                keys.Clear(); //clear list, combo lost
+                comboTimer.Reset();
+
                 return false;
             }
-
-            keys.Add(keyPressed); //add key, combo continued
-
-            if (IsFull()) //completed combo
+            else //unique attack in combo
             {
-                keys.Clear(); //clear list
-            }
+                if (IsEmpty()) //first attack in combo, has delay
+                {
+                    keys.Add(keyPressed);
+                    return false;
+                }
 
-            return true;
+                keys.Add(keyPressed); //add key, combo continued
+
+                if (IsFull()) //completed combo
+                {
+                    keys.Clear(); //clear list
+                    comboTimer.Reset();
+                }
+
+                return true;
+            }
         }
+        else
+        {
+            return false; //cooldown has not elapsed
+        }
+        
+    }
+
+    /// <summary>
+    /// Scales the length of the cooldown
+    /// in between combos to the player's
+    /// scale.
+    /// </summary>
+    public void Scale()
+    {
+        comboTimer.Scale();
     }
 
     /// <summary>
@@ -72,7 +104,7 @@ public class ComboList : MonoBehaviour
     }
 
     /// <summary>
-    /// Chcks whether the list of
+    /// Checks whether the list of
     /// KeyCodes is empty.
     /// </summary>
     /// <returns>

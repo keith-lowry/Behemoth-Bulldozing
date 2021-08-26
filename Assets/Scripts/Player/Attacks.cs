@@ -4,69 +4,101 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.ConstrainedExecution;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Vector2 = UnityEngine.Vector2;
 // ReSharper disable All
 
 /// <summary>
-/// Class that handles animations and
-/// mechanics associated with player
-/// attacks.
+/// Script that handles the player's
+/// attacks, including animations and
+/// making attacks against buildings
+/// and other players.
 /// </summary>
 public class Attacks : MonoBehaviour
 {
-    public PlayerController pc;
-    public ComboList combos;
-    public int baseDamage;
-    public float maxAttackRate; //most number of times player can attack in a second
-    public float minAttackRate; //least number of times player can attack in a second
-    
-    private float attackRateModifier; //intervals of attack rate decrease
-    private float attackRate; //scaled number of times player can attack in a second
+    public float baseAttack = 10f;
+
+    //most number of times player can attack in a second
+    public float maxAttackRate = 3f;
+
+    //least number of times player can attack in a second
+    public float minAttackRate = 1f; 
+
+    public KeyCode kickKey = KeyCode.F;
+    public KeyCode leftPunchKey = KeyCode.Mouse0;
+    public KeyCode rightPunchKey = KeyCode.Mouse1;
+
+    private PlayerController pc;
+    private ComboList combos;
     private SpriteRenderer sr;
+    private float attack; //attack damage scaled to player's current size
+    private float attackRateModifier; //intervals of attack rate decrease
+    private float attackRate; //attack rate scaled to player's current size
     private float nextAttack; //time of next attack
 
-    // Start is called before the first frame update
     void Start()
     {
+        pc = GetComponent<PlayerController>();
+        combos = GetComponent<ComboList>();
         sr = GetComponent<SpriteRenderer>();
+
         nextAttack = 0f;
-        attackRateModifier = (maxAttackRate - minAttackRate) / (pc.maxScale - pc.minScale); //calculate "steps" btw max and min delay
-        ScaleAttackRate();
+
+        //calculate "steps" btw max and min attack rate
+        attackRateModifier = (maxAttackRate - minAttackRate) / 
+                             (pc.maxScale - pc.minScale);      
+        Scale();
     }
 
     // Update is called once per frame
     void Update()
     {
         // attack control
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (Input.GetKeyDown(kickKey)) //kick only once per press
         {
-            PunchLeft(); //left punch
+            Kick();
         }
-
-        if (Input.GetKey(KeyCode.Mouse1))
+        else if (Input.GetKey(leftPunchKey)) //punches repeat
         {
-            PunchRight(); //right punch
+            LeftPunch();
         }
-
-        if (Input.GetKey(KeyCode.F))
+        else if (Input.GetKey(rightPunchKey))
         {
-            Kick(); //kick
+            RightPunch();
         }
     }
 
     /// <summary>
-    /// Player punches in the direction of the
-    /// cursor with their right hand.
+    /// Scales the player's attack rate, damage,
+    /// and the cooldown between their combos
+    /// to their current scale.
     /// </summary>
-    public void PunchRight()
-    { 
-        //make attack if it's part of a combo or delay has elapsed
-        if (combos.Add(KeyCode.Mouse1) || Time.time >= nextAttack)
+    public void Scale()
+    {
+        float attackRateDecrease = (pc.GetScale() - pc.minScale) * 
+                                   attackRateModifier;
+
+        attackRate = maxAttackRate - attackRateDecrease;
+
+        float attackIncrease = (pc.GetScale() - pc.minScale) * baseAttack;
+        attack = baseAttack + attackIncrease;
+
+        combos.Scale();
+    }
+
+    /// <summary>
+    /// Player kicks in the direction of the
+    /// cursor.
+    /// </summary>
+    private void Kick()
+    {
+        if (CanAttack(kickKey))
         {
             //animation control
 
             //TODO: call Dash()
 
+            //make attack
             Attack();
         }
     }
@@ -75,65 +107,59 @@ public class Attacks : MonoBehaviour
     /// Player punches in the direction of the
     /// cursor with their left hand.
     /// </summary>
-    public void PunchLeft()
+    private void LeftPunch()
     {
-        //make attack if it's part of a combo or delay has elapsed
-        if (combos.Add(KeyCode.Mouse0) || Time.time >= nextAttack)
+        if (CanAttack(leftPunchKey))
         {
             //animation control
 
             //TODO: call Dash()
 
+            //make attack
             Attack();
         }
     }
 
     /// <summary>
-    /// Player kicks in the direction of the
-    /// cursor.
+    /// Player punches in the direction of the
+    /// cursor with their right hand.
     /// </summary>
-    public void Kick()
+    private void RightPunch()
     {
-        //make attack if it's part of a combo or delay has elapsed
-        if (combos.Add(KeyCode.F) || Time.time >= nextAttack)
+        if (CanAttack(rightPunchKey))
         {
             //animation control
 
             //TODO: call Dash()
 
+            //make attack
             Attack();
         }
-    }
-
-    /// <summary>
-    /// Scales the player's attack delay to their
-    /// scale.
-    /// </summary>
-    public void ScaleAttackRate()
-    {
-        float decrease = (pc.GetScale() - pc.minScale) * attackRateModifier;
-        attackRate = maxAttackRate - decrease;
     }
 
     /// <summary>
     /// Makes an attack in front of the player with
     /// a raycast. If cast hits a building, it makes
-    /// it take damage.
+    /// it take damage equal to the player's attack.
     /// </summary>
     private void Attack()
     {
-        nextAttack = Time.time +  (1f / attackRate); //calculate time of next attack
+        nextAttack = Time.time +  (1f / attackRate); //get time of next attack
 
-        Vector2 origin = new Vector2(transform.position.x, transform.position.y); //raycast origin
-        Vector2 direction = pc.GetCursorDirection(); //raycast direction
+        Vector2 origin = new Vector2(transform.position.x, 
+            transform.position.y); 
+        Vector2 direction = pc.GetCursorDirection(); 
 
         // TODO: tweak raycast size for different player scales?
-        RaycastHit2D hit = Physics2D.Raycast(origin, direction, sr.size.x * pc.GetScale(), LayerMask.GetMask("Buildings")); //make cast
+        RaycastHit2D hit = Physics2D.
+            Raycast(origin, direction, sr.size.x * pc.GetScale(), 
+                LayerMask.GetMask("Buildings")); //make cast
 
         if (hit)
         {
-            BuildingBehavior bh = hit.transform.gameObject.GetComponent<BuildingBehavior>();
-            bh.TakeDamage(GetDamage(), pc); //make building take damage
+            BuildingBehavior bh = hit.transform.gameObject.
+                GetComponent<BuildingBehavior>();
+            bh.TakeDamage(attack, pc); //make building take damage
 
 
             //TODO: implement player knockback
@@ -141,14 +167,23 @@ public class Attacks : MonoBehaviour
     }
 
     /// <summary>
-    /// Calculate the damage the player deals to
-    /// a building with an attack.
+    /// Determines whether an attack can be
+    /// made.
+    ///
+    /// An attack can be made if it's associated
+    /// key is part of a combo, or if enough
+    /// time has elapsed between attacks.
     /// </summary>
-    /// <returns> 
-    /// Damage dealt to building.
+    /// <param name="attackKey">
+    /// The KeyCode associated with
+    /// the attack to be made.
+    /// </param>
+    /// <returns>
+    /// True if an attack can be made, false
+    /// otherwise.
     /// </returns>
-    private int GetDamage()
+    private bool CanAttack(KeyCode attackKey)
     {
-        return (int) (baseDamage * pc.GetScale()); //damage scales with size
+        return (combos.Add(attackKey) || Time.time >= nextAttack);
     }
 }

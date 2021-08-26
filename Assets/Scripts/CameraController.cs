@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Script for making main Camera
-/// follow player.
+/// Script that makes the main Camera
+/// follow the player.
 /// </summary>
 public class CameraController : MonoBehaviour
 {
     public GameObject player;
 
-    private Vector3 offset;
+    private Vector3 offset; //offset btw player and camera
 
     void Awake()
     {
-        offset = transform.position - player.transform.position; // offset btw player and camera
+        offset = transform.position - player.transform.position;
     }
 
     // Update is called once per frame

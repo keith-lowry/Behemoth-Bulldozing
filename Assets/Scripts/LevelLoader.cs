@@ -1,16 +1,17 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Class for loading scenes.
+/// Static class for loading
+/// different scenes.
 /// </summary>
-public static class LevelLoader
+public static class LevelLoader                                                
 {
     /// <summary>
-    /// Enum for scenes to load.
+    /// Enum for different scenes to load.
     /// </summary>
     public enum SceneEnum
     {
