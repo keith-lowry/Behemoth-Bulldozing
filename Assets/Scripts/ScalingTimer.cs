@@ -19,6 +19,8 @@ public class ScalingTimer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        timeModifier = (maxTime - minTime) / (pc.maxScale - pc.minScale); //calculate "steps" for scaling timer duration
+
         ScaleTimer();
     }
 
@@ -37,11 +39,12 @@ public class ScalingTimer : MonoBehaviour
     }
 
     /// <summary>
-    /// Scales the Timer to fit 
+    /// Scales the Timer to fit the
+    /// player's scale.
     /// </summary>
     public void ScaleTimer()
     {
-
+        
     }
 
     /// <summary>
