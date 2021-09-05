@@ -21,16 +21,6 @@ public class ScalingTimer : MonoBehaviour
     private float time; //the current duration of the timer
     protected float timeLeft; //running time left in timer
 
-    /// <summary>
-    /// Enum determining whether the timer
-    /// scales up or down in duration as
-    /// the player's scale increases.
-    /// </summary>
-    public enum ScalingEnum
-    {
-        ScaleUp, ScaleDown
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -116,4 +106,14 @@ public class ScalingTimer : MonoBehaviour
         float decrease = (pc.GetScale() - pc.minScale) * timeModifier;
         time = maxTime - decrease;
     }
+}
+
+/// <summary>
+/// Enum determining whether the timer
+/// scales up or down in duration as
+/// the player's scale increases.
+/// </summary>
+public enum ScalingEnum
+{
+    ScaleUp, ScaleDown
 }
