@@ -7,4 +7,5 @@ The game is not currently in an (enjoyable) playable state.
 
 Check out the Project Documentation folder to see the project's UML, game doc, and more.
 
-I am currently pausing this project as I focus on my studies and work on smaller, more manageable projects at the moment. - KL 9/19/2021
+Update 9/19/21: I am currently pausing this project as I focus on my studies and work on smaller, more manageable projects at the moment.
+Update 2/11/22: Current game playable here: https://keith-lowry.itch.io/behemoth-bulldozing-progress.
